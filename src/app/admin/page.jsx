@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { getAllBookings,getRooms } from "../../services/api";
 
 // ======================
 // COMPONENTES INTERNOS
@@ -121,14 +122,15 @@ function AdminHeader() {
   );
 }
 
-function SummaryCards() {
+
+function SummaryCards({ reservationsCount }) {
   const [hoverCard, setHoverCard] = useState(null);
 
   const stats = [
     {
       id: "reservations",
-      label: "Reservas Hoje",
-      value: 5,
+      label: "Reservas",
+      value: reservationsCount,
       color: "#ff8a4fff",
       icon: (
         <svg
@@ -270,37 +272,31 @@ function SummaryCards() {
 }
 
 function BookingSection() {
-  const [expandedBooking, setExpandedBooking] = useState(null);
 
-  const mockBookings = [
-    {
-      id: "1",
-      user: "Rodolfo S.",
-      room: "Sala A1",
-      start: "10:00",
-      end: "11:30",
-      items: ["Chave A1", "Adaptador HDMI"],
-      avatar: "👨‍💼",
-    },
-    {
-      id: "2",
-      user: "Isadora L.",
-      room: "Sala B2",
-      start: "14:00",
-      end: "15:00",
-      items: ["Controle Ar"],
-      avatar: "👩‍💻",
-    },
-    {
-      id: "3",
-      user: "Felix M.",
-      room: "Sala C3",
-      start: "16:00",
-      end: "17:30",
-      items: [],
-      avatar: "👨‍🔬",
-    },
-  ];
+  const [bookings, setBookings] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [allBookings, allRooms] = await Promise.all([
+          getAllBookings(),
+          getRooms()
+        ]);
+        setBookings(allBookings);
+        setRooms(allRooms);
+      } catch (err) {
+        setBookings([]);
+        setRooms([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  
 
   // ícones para os itens das reservas — usamos os mesmos da seção de recursos
   const resourceIcons = {
@@ -309,8 +305,8 @@ function BookingSection() {
     Chave: "🔑",
     TV: "📺",
     "Wi-Fi Premium": "📡",
-    "Adaptador HDMI": "🔌", // plugzinho pra representar o adaptador
-    "Controle Ar": "🌬️", // vento pra simbolizar o ar-condicionado
+    "Adaptador HDMI": "🔌",
+    "Controle Ar": "🌬️",
   };
 
   const handleCancel = (id, user) => {
@@ -327,97 +323,91 @@ function BookingSection() {
           Reservas Ativas
         </h2>
         <div className="px-4 py-2 bg-[#48C957] text-white rounded-full text-sm font-bold shadow-md">
-          {mockBookings.length} ativas
+          {bookings.length} ativas
         </div>
       </div>
 
-      <div className="space-y-4">
-        {mockBookings.map((booking) => (
-          <div
-            key={booking.id}
-            className="group relative bg-gradient-to-r from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl border-2 border-[#FFB94F] hover:border-[#48C957] transition-all duration-300 transform hover:scale-[1.02]"
-          >
-            {/* Abelha decorativa no hover */}
-            <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-2xl animate-bounce">🐝</span>
-            </div>
-
-            <div className="flex justify-between items-start">
-              <div className="flex items-start space-x-4 flex-1">
-                {/* Avatar */}
-                <div className="text-4xl bg-[#48C957] rounded-full w-14 h-14 flex items-center justify-center shadow-md">
-                  {booking.avatar}
+      {loading ? (
+        <div className="text-center py-8 text-gray-500">Carregando reservas...</div>
+      ) : (
+        <div className="space-y-4">
+          {bookings.map((booking) => {
+            // Find room name by ID
+            const roomObj = rooms.find(r => r._id === booking.room);
+            const roomName = roomObj ? roomObj.name : booking.room;
+            return (
+              <div
+                key={booking._id}
+                className="group relative bg-gradient-to-r from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl border-2 border-[#FFB94F] hover:border-[#48C957] transition-all duration-300 transform hover:scale-[1.02]"
+              >
+                {/* Abelha decorativa no hover */}
+                <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-2xl animate-bounce">🐝</span>
                 </div>
 
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <p className="font-bold text-lg text-[#0C0C0C]">
-                      {booking.user}
-                    </p>
-                    <span className="px-3 py-1 bg-[#FFB94F] text-[#0C0C0C] rounded-full text-xs font-bold">
-                      {booking.room}
-                    </span>
+                <div className="flex justify-between items-start">
+                  <div className="flex items-start space-x-4 flex-1">
+                    {/* Avatar (use initials or emoji) */}
+                    <div className="text-4xl bg-[#48C957] rounded-full w-14 h-14 flex items-center justify-center shadow-md">
+                      {booking.userName ? booking.userName[0] : "👤"}
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <p className="font-bold text-lg text-[#0C0C0C]">
+                          {booking.userName || "Usuário"}
+                        </p>
+                        <span className="px-3 py-1 bg-[#FFB94F] text-[#0C0C0C] rounded-full text-xs font-bold">
+                          {roomName}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 text-sm text-gray-700 mb-3">
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle cx="12" cy="12" r="10" strokeWidth={2} />
+                          <path
+                            d="M12 6v6l4 2"
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <span className="font-medium">
+                          {booking.startTime} – {booking.endTime}
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-gray-700 mb-3">
+                  <button
+                    onClick={() => handleCancel(booking._id, booking.userName)}
+                    className="px-5 py-2.5 bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] rounded-full hover:from-[#e5a740] hover:to-[#FFB94F] transition-all duration-300 font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-2"
+                  >
                     <svg
                       className="w-4 h-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <circle cx="12" cy="12" r="10" strokeWidth={2} />
                       <path
-                        d="M12 6v6l4 2"
-                        strokeWidth={2}
                         strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
                       />
                     </svg>
-                    <span className="font-medium">
-                      {booking.start} – {booking.end}
-                    </span>
-                  </div>
-
-                  {booking.items.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {booking.items.map((item, i) => (
-                        <span
-                          key={i}
-                          className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1 rounded-full text-[#0C0C0C] font-medium shadow-sm flex items-center gap-1"
-                        >
-                          {/* ícone do item, se tiver — senão, caímos no padrão 📦 */}
-                          <span>{resourceIcons[item] || "📦"}</span>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                    Cancelar
+                  </button>
                 </div>
               </div>
-
-              <button
-                onClick={() => handleCancel(booking.id, booking.user)}
-                className="px-5 py-2.5 bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] rounded-full hover:from-[#e5a740] hover:to-[#FFB94F] transition-all duration-300 font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-2"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-                Cancelar
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -583,7 +573,25 @@ function ResourceSection() {
 // PÁGINA PRINCIPAL
 // ======================
 
+
 export default function AdminPage() {
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBookings() {
+      try {
+        const allBookings = await getAllBookings();
+        setBookings(allBookings);
+      } catch (err) {
+        setBookings([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBookings();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F8F4E3] via-[#FFF8E7] to-[#F8F4E3] py-10 px-4 relative overflow-hidden">
       {/* Abelhas animadas de fundo */}
@@ -608,7 +616,7 @@ export default function AdminPage() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <AdminHeader />
-        <SummaryCards />
+        <SummaryCards reservationsCount={bookings.length} />
         <div className="space-y-8">
           <BookingSection />
           <ResourceSection />
