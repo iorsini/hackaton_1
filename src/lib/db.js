@@ -1,15 +1,9 @@
-// /lib/mongodb.js
-{/*
-Esse bloco de código é um módulo de conexão com o banco de dados MongoDB usando o Mongoose, 
-feito de forma inteligente e eficiente, especialmente para aplicações Next.js ou Node.js 
-com recarregamento automático (como em ambiente de desenvolvimento).  
-*/}
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error('Por favor defina MONGODB_URI no .env.local');
+  throw new Error('Por favor defina a variável MONGODB_URI no arquivo .env.local');
 }
 
 let cached = global.mongoose;
