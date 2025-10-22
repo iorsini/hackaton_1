@@ -322,9 +322,7 @@ function BookingSection() {
           <span className="mr-3 text-3xl">📅</span>
           Reservas Ativas
         </h2>
-        <div className="px-4 py-2 bg-[#48C957] text-white rounded-full text-sm font-bold shadow-md">
-          {bookings.length} ativas
-        </div>
+        
       </div>
 
       {loading ? (
