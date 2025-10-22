@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllBookings,getRooms } from "../../services/api";
+import { getAllBookings,getRooms, deleteBooking } from "../../services/api";
 
 // ======================
 // COMPONENTES INTERNOS
@@ -316,9 +316,21 @@ function BookingSection() {
     "Mesas Modulares": "🪑",
   };
 
-  const handleCancel = (id, user) => {
+  const handleCancel = async (id, user) => {
     if (confirm(`Cancelar reserva de ${user}?`)) {
-      alert(`Reserva cancelada com sucesso! 🐝`);
+      try {
+        await deleteBooking(id);
+        alert(`Reserva cancelada com sucesso! 🐝`);
+        // dar refresh à lista
+        const [allBookings, allRooms] = await Promise.all([
+          getAllBookings(),
+          getRooms()
+        ]);
+        setBookings(allBookings);
+        setRooms(allRooms);
+      } catch (err) {
+        alert('Erro ao cancelar reserva.');
+      }
     }
   };
 

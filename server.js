@@ -57,7 +57,7 @@ app.get('/api/salas/:id/bookings', async (req, res) => {
     res.status(500).json({ erro: 'Erro interno do servidor' });
   }
 });
-
+//para futuro uso - GET /api/salas/:id/available-dates - Retorna datas disponíveis para uma sala específica
 app.get("/api/salas/:id/available-dates", async (req, res) => {
   try {
     const bookings = await booking.find({ room: req.params.id });
@@ -97,6 +97,19 @@ app.post('/api/salas', async (req, res) => {
     res.status(201).json(savedRoom);
   } catch (error) {
     console.error('Erro ao criar sala:', error);
+    res.status(500).json({ erro: 'Erro interno do servidor' });
+  }
+});
+
+app.delete('/api/bookings/:id', async (req, res) => {
+  try {
+    const deletedBooking = await booking.findByIdAndDelete(req.params.id);
+    if (!deletedBooking) {
+      return res.status(404).json({ erro: 'Reserva não encontrada' });
+    }
+    res.status(204).send();
+  } catch (error) {
+    console.error('Erro ao deletar reserva:', error);
     res.status(500).json({ erro: 'Erro interno do servidor' });
   }
 });
