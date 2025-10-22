@@ -1,6 +1,3 @@
-// Script para popular o banco de dados com salas de exemplo
-// Execute: node seed.js
-
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
@@ -24,7 +21,7 @@ const sampleRooms = [
     description: 'Espaço amplo e moderno, ideal para reuniões de equipe e apresentações importantes.',
     capacity: 12,
     resources: ['WiFi', 'Projetor', 'Quadro Branco', 'Videoconferência'],
-    image: '',
+    image: '/images/rooms/sala_reunioes_principal.png',
     isActive: true,
     location: 'Piso 1',
   },
@@ -33,7 +30,7 @@ const sampleRooms = [
     description: 'Ambiente criativo e inspirador, perfeito para sessões de ideação e trabalho colaborativo.',
     capacity: 8,
     resources: ['WiFi', 'Quadro Branco', 'Post-its', 'Café'],
-    image: '',
+    image: '/images/rooms/sala_brainstorming.png',
     isActive: true,
     location: 'Piso 2',
   },
@@ -42,7 +39,7 @@ const sampleRooms = [
     description: 'Sala executiva para reuniões formais e videoconferências com clientes.',
     capacity: 20,
     resources: ['WiFi', 'Projetor', 'Sistema de Som', 'Videoconferência', 'Café'],
-    image: '',
+    image: '/images/rooms/sala_conferencias.png',
     isActive: true,
     location: 'Piso 3',
   },
@@ -51,7 +48,7 @@ const sampleRooms = [
     description: 'Espaço flexível para trabalho em equipe e workshops.',
     capacity: 15,
     resources: ['WiFi', 'Quadro Branco', 'Mesas Modulares'],
-    image: '',
+    image: '/images/rooms/sala_trabalho_colaborativo.png',
     isActive: true,
     location: 'Piso 2',
   },
@@ -60,7 +57,7 @@ const sampleRooms = [
     description: 'Pequeno espaço reservado para reuniões individuais ou chamadas privadas.',
     capacity: 4,
     resources: ['WiFi', 'Monitor'],
-    image: '',
+    image: '/images/rooms/sala_privada.png',
     isActive: true,
     location: 'Piso 1',
   },
@@ -69,7 +66,7 @@ const sampleRooms = [
     description: 'Grande espaço para eventos, palestras e apresentações para audiências maiores.',
     capacity: 50,
     resources: ['WiFi', 'Projetor', 'Sistema de Som', 'Microfones', 'Palco'],
-    image: '',
+    image: '/images/rooms/auditorio.png',
     isActive: true,
     location: 'Piso Térreo',
   },
