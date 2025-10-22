@@ -34,10 +34,7 @@ const ReservationSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Finalidade é obrigatória'],
     },
-    selectedResources: {
-      type: [String],
-      default: [],
-    },
+
     status: {
       type: String,
       enum: ['confirmed', 'cancelled', 'completed'],
