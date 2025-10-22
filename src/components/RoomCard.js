@@ -1,9 +1,11 @@
 import { MapPin, Users, Wifi, Monitor, Coffee } from 'lucide-react';
+import Image from 'next/image';
 
 export default function RoomCard({ room, onReserve }) {
   const getResourceIcon = (resource) => {
     const icons = {
       wifi: Wifi,
+      projetor: Monitor,
       projector: Monitor,
       coffee: Coffee,
     };
@@ -12,14 +14,16 @@ export default function RoomCard({ room, onReserve }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group">
+    <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group flex flex-col">
       {/* Image */}
       <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary-100 to-primary-200">
         {room.image ? (
-          <img
+          <Image
             src={room.image}
             alt={room.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-300"
+            priority
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -27,16 +31,16 @@ export default function RoomCard({ room, onReserve }) {
           </div>
         )}
         <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full shadow-md">
-          <span className="text-sm font-semibold text-gray-900">
-            {room.capacity} <Users className="inline" size={14} />
+          <span className="text-sm font-semibold text-gray-900 flex items-center gap-1">
+            {room.capacity} <Users size={14} />
           </span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="flex flex-col flex-grow p-6">
         <h3 className="text-xl font-bold text-gray-900 mb-2">{room.name}</h3>
-        <p className="text-gray-600 mb-4 line-clamp-2">{room.description}</p>
+        <p className="text-gray-600 mb-4 line-clamp-2 flex-grow">{room.description}</p>
 
         {/* Resources */}
         {room.resources && room.resources.length > 0 && (
@@ -54,12 +58,14 @@ export default function RoomCard({ room, onReserve }) {
         )}
 
         {/* Action Button */}
-        <button
-          onClick={onReserve}
-          className="w-full bg-primary-500 text-white py-3 rounded-xl hover:bg-primary-600 transition font-semibold shadow-sm hover:shadow-md"
-        >
-          Reservar Agora
-        </button>
+        <div className="mt-auto">
+          <button
+            onClick={onReserve}
+            className="w-full bg-[#E69500] text-white py-3 rounded-xl hover:bg-primary-600 transition font-semibold shadow-sm hover:shadow-md"
+          >
+            Reservar Agora
+          </button>
+        </div>
       </div>
     </div>
   );

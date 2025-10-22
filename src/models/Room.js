@@ -20,22 +20,11 @@ const RoomSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    image: {
-      type: String,
-      default: '',
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
     location: {
       type: String,
       default: '',
     },
   },
-  {
-    timestamps: true,
-  }
 );
 
-export default mongoose.models.Room || mongoose.model('Room', RoomSchema);
+export default mongoose.models.Room || mongoose.model('sala', RoomSchema);

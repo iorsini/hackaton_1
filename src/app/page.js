@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import RoomCard from '@/components/RoomCard';
 import ReservationModal from '@/components/ReservationModal';
 import { Calendar, Search } from 'lucide-react';
+import { getRooms } from '../services/api';
 
 export default function Home() {
   const [rooms, setRooms] = useState([]);
@@ -17,10 +18,9 @@ export default function Home() {
 
   const fetchRooms = async () => {
     try {
-      const res = await fetch('/api/rooms');
-      const data = await res.json();
-      if (data.success) {
-        setRooms(data.data);
+      const data = await getRooms();
+      if (data) {
+        setRooms(data);
       }
     } catch (error) {
       console.error('Erro ao carregar salas:', error);
@@ -42,7 +42,7 @@ export default function Home() {
           Encontre o Espaço Perfeito
         </h1>
         <p className="text-xl text-gray-600 mb-8">
-          Reserve salas e recursos para o seu próximo evento
+          Reserve salas, recursos e itens para o seu próximo evento
         </p>
 
         {/* Search Bar */}
