@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Calendar, Clock, User, Mail, MessageSquare, CheckCircle } from 'lucide-react';
+import { X, Calendar, Clock, User, Mail, MessageSquare, CheckCircle, Users } from 'lucide-react';
 import {createBooking} from '../services/api';
 
 export default function ReservationModal({ room, onClose, onSuccess }) {
@@ -10,17 +10,36 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
     startTime: '',
     endTime: '',
     purpose: '',
-    selectedResources: []
+    selectedResources: [],
+    numberOfPeople: 1
   });
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [capacityError, setCapacityError] = useState('');
+
+  const handleNumberOfPeopleChange = (value) => {
+    const numPeople = parseInt(value) || 1;
+    setFormData({ ...formData, numberOfPeople: numPeople });
+    
+    if (numPeople > room.capacity) {
+      setCapacityError(`⚠️ Esta sala suporta no máximo ${room.capacity} pessoas`);
+    } else {
+      setCapacityError('');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (formData.numberOfPeople > room.capacity) {
+      alert(`Esta sala suporta no máximo ${room.capacity} pessoas. Por favor, escolha outra sala ou reduza o número de pessoas.`);
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const res = await createBooking(room._id,{
+      const res = await createBooking(room._id, {
         ...formData,
         room: room._id,
       });
@@ -70,9 +89,14 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
       <div className="bg-white rounded-2xl max-w-2xl w-full my-8 animate-slide-up">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">
-            Reservar {room.name}
-          </h2>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Reservar {room.name}
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Capacidade máxima: {room.capacity} pessoas
+            </p>
+          </div>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition"
@@ -113,6 +137,36 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
                 placeholder="seu@email.com"
               />
             </div>
+          </div>
+
+          {/* Number of People */}
+          <div>
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+              <Users size={16} />
+              Número de Pessoas
+            </label>
+            <input
+              type="number"
+              required
+              min="1"
+              max={room.capacity}
+              value={formData.numberOfPeople}
+              onChange={(e) => handleNumberOfPeopleChange(e.target.value)}
+              className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent outline-none ${
+                capacityError 
+                  ? 'border-red-500 focus:ring-red-500' 
+                  : 'border-gray-300 focus:ring-primary-500'
+              }`}
+              placeholder="Quantas pessoas?"
+            />
+            {capacityError && (
+              <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
+                {capacityError}
+              </p>
+            )}
+            <p className="text-gray-500 text-xs mt-1">
+              Esta sala suporta até {room.capacity} pessoas
+            </p>
           </div>
 
           {/* Date and Time */}
@@ -203,7 +257,7 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !!capacityError}
             className="w-full bg-[#E69500] text-white py-4 rounded-xl hover:bg-primary-600 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
           >
             {loading ? 'Processando...' : 'Confirmar Reserva'}

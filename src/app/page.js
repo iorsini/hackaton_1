@@ -102,7 +102,7 @@ export default function Home() {
           </div>
 
           <h1 className="text-6xl font-bold text-[#0C0C0C] mb-2 tracking-tight">
-            🐝 Encontre o Espaço Perfeito
+            Encontre o Espaço Perfeito
           </h1>
           <p className="text-[#48C957] text-lg font-medium mb-8">
             Reserve salas, recursos e itens para o seu próximo evento

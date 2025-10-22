@@ -34,9 +34,19 @@ const ReservationSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-
+    numberOfPeople: {
+      type: Number,
+      required: [true, 'Número de pessoas é obrigatório'],
+      min: 1,
+    },
+    selectedResources: {
+      type: [String],
+      default: [],
+    },
   },
-
+  {
+    timestamps: true,
+  }
 );
 
 // Index para buscar reservas por sala e data

@@ -272,7 +272,6 @@ function SummaryCards({ reservationsCount }) {
 }
 
 function BookingSection() {
-
   const [bookings, setBookings] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -296,17 +295,25 @@ function BookingSection() {
     fetchData();
   }, []);
 
-  
-
-  // ícones para os itens das reservas — usamos os mesmos da seção de recursos
+  // Ícones para os recursos selecionados
   const resourceIcons = {
     Projetor: "📽️",
     Whiteboard: "📋",
+    "Quadro Branco": "📋",
     Chave: "🔑",
     TV: "📺",
+    WiFi: "📡",
     "Wi-Fi Premium": "📡",
     "Adaptador HDMI": "🔌",
     "Controle Ar": "🌬️",
+    Videoconferência: "💻",
+    "Sistema de Som": "🔊",
+    Café: "☕",
+    Monitor: "🖥️",
+    Palco: "🎭",
+    Microfones: "🎤",
+    "Post-its": "📝",
+    "Mesas Modulares": "🪑",
   };
 
   const handleCancel = (id, user) => {
@@ -322,17 +329,22 @@ function BookingSection() {
           <span className="mr-3 text-3xl">📅</span>
           Reservas Ativas
         </h2>
-        
       </div>
 
       {loading ? (
         <div className="text-center py-8 text-gray-500">Carregando reservas...</div>
+      ) : bookings.length === 0 ? (
+        <div className="text-center py-8">
+          <div className="text-6xl mb-4">📭</div>
+          <p className="text-gray-500">Nenhuma reserva ativa no momento</p>
+        </div>
       ) : (
         <div className="space-y-4">
           {bookings.map((booking) => {
             // Find room name by ID
             const roomObj = rooms.find(r => r._id === booking.room);
             const roomName = roomObj ? roomObj.name : booking.room;
+            
             return (
               <div
                 key={booking._id}
@@ -345,12 +357,13 @@ function BookingSection() {
 
                 <div className="flex justify-between items-start">
                   <div className="flex items-start space-x-4 flex-1">
-                    {/* Avatar (use initials or emoji) */}
+                    {/* Avatar */}
                     <div className="text-4xl bg-[#48C957] rounded-full w-14 h-14 flex items-center justify-center shadow-md">
-                      {booking.userName ? booking.userName[0] : "👤"}
+                      {booking.userName ? booking.userName[0].toUpperCase() : "👤"}
                     </div>
 
                     <div className="flex-1">
+                      {/* Nome e Sala */}
                       <div className="flex items-center gap-3 mb-2">
                         <p className="font-bold text-lg text-[#0C0C0C]">
                           {booking.userName || "Usuário"}
@@ -360,24 +373,62 @@ function BookingSection() {
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 text-sm text-gray-700 mb-3">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle cx="12" cy="12" r="10" strokeWidth={2} />
-                          <path
-                            d="M12 6v6l4 2"
-                            strokeWidth={2}
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                        <span className="font-medium">
-                          {booking.startTime} – {booking.endTime}
-                        </span>
+                      {/* Data e Horário */}
+                      <div className="flex items-center gap-4 text-sm text-gray-700 mb-2">
+                        <div className="flex items-center gap-2">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <rect x="3" y="4" width="18" height="18" rx="2" strokeWidth={2} />
+                            <path d="M16 2v4M8 2v4M3 10h18" strokeWidth={2} />
+                          </svg>
+                          <span className="font-medium">
+                            {new Date(booking.date).toLocaleDateString('pt-PT')}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" strokeWidth={2} />
+                            <path d="M12 6v6l4 2" strokeWidth={2} strokeLinecap="round" />
+                          </svg>
+                          <span className="font-medium">
+                            {booking.startTime} – {booking.endTime}
+                          </span>
+                        </div>
                       </div>
+
+                      {/* Número de Pessoas */}
+                      {booking.numberOfPeople && (
+                        <div className="flex items-center gap-2 text-sm text-gray-700 mb-2">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                          </svg>
+                          <span className="font-medium">{booking.numberOfPeople} pessoa{booking.numberOfPeople > 1 ? 's' : ''}</span>
+                        </div>
+                      )}
+
+                      {/* Recursos Selecionados */}
+                      {booking.selectedResources && booking.selectedResources.length > 0 && (
+                        <div className="mt-3">
+                          <p className="text-xs text-gray-600 mb-2 font-semibold">Recursos solicitados:</p>
+                          <div className="flex flex-wrap gap-2">
+                            {booking.selectedResources.map((resource, idx) => (
+                              <span
+                                key={idx}
+                                className="inline-flex items-center gap-1 text-xs bg-white border-2 border-[#FFB94F] px-3 py-1 rounded-full text-[#0C0C0C] font-medium shadow-sm"
+                              >
+                                <span>{resourceIcons[resource] || "📦"}</span>
+                                {resource}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Finalidade */}
+                      {booking.purpose && (
+                        <div className="mt-3 text-sm text-gray-600">
+                          <span className="font-semibold">Finalidade:</span> {booking.purpose}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -385,18 +436,8 @@ function BookingSection() {
                     onClick={() => handleCancel(booking._id, booking.userName)}
                     className="px-5 py-2.5 bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] rounded-full hover:from-[#e5a740] hover:to-[#FFB94F] transition-all duration-300 font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-2"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                     Cancelar
                   </button>
