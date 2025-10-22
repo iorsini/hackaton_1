@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import RoomCard from '@/components/RoomCard';
 import ReservationModal from '@/components/ReservationModal';
 import { Calendar, Search } from 'lucide-react';
+import { getRooms } from '../../services/api';
 
 export default function Home() {
   const [rooms, setRooms] = useState([]);
@@ -17,8 +18,7 @@ export default function Home() {
 
   const fetchRooms = async () => {
     try {
-      const res = await fetch('/api/rooms');
-      const data = await res.json();
+      const data = await getRooms();
       if (data.success) {
         setRooms(data.data);
       }
