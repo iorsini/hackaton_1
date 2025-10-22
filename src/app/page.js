@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import RoomCard from '@/components/RoomCard';
 import ReservationModal from '@/components/ReservationModal';
 import { Calendar, Search } from 'lucide-react';
-import { getRooms } from '../../services/api';
+import { getRooms } from '../services/api';
 
 export default function Home() {
   const [rooms, setRooms] = useState([]);
@@ -19,8 +19,8 @@ export default function Home() {
   const fetchRooms = async () => {
     try {
       const data = await getRooms();
-      if (data.success) {
-        setRooms(data.data);
+      if (data) {
+        setRooms(data);
       }
     } catch (error) {
       console.error('Erro ao carregar salas:', error);
