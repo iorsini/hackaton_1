@@ -1,9 +1,11 @@
 import { MapPin, Users, Wifi, Monitor, Coffee } from 'lucide-react';
+import Image from 'next/image';
 
 export default function RoomCard({ room, onReserve }) {
   const getResourceIcon = (resource) => {
     const icons = {
       wifi: Wifi,
+      projetor: Monitor,
       projector: Monitor,
       coffee: Coffee,
     };
@@ -16,10 +18,12 @@ export default function RoomCard({ room, onReserve }) {
       {/* Image */}
       <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary-100 to-primary-200">
         {room.image ? (
-          <img
+          <Image
             src={room.image}
             alt={room.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-300"
+            priority
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
