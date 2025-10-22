@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import RoomCard from '@/components/RoomCard';
-import ReservationModal from '@/components/ReservationModal';
-import { Calendar, Search } from 'lucide-react';
-import { getRooms } from '../services/api';
+import { useState, useEffect } from "react";
+import RoomCard from "@/components/RoomCard";
+import ReservationModal from "@/components/ReservationModal";
+import { Calendar, Search } from "lucide-react";
+import { getRooms } from "../services/api";
 
 export default function Home() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchRooms();
@@ -21,7 +21,7 @@ export default function Home() {
       const data = await getRooms();
       if (data) setRooms(data);
     } catch (error) {
-      console.error('Erro ao carregar salas:', error);
+      console.error("Erro ao carregar salas:", error);
     } finally {
       setLoading(false);
     }
@@ -34,35 +34,44 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#F8F4E3] via-[#FFF8E7] to-[#F8F4E3] py-10 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-[#F8F4E3] via-[#FFF8E7] to-[#F8F4E3] py-10 px-4 relative overflow-hidden">
       {/* Abelhas animadas de fundo */}
-      <div className="absolute top-20 left-10 animate-bounce opacity-20" style={{ animationDuration: '3s' }}>🐝</div>
-      <div className="absolute top-40 right-20 animate-bounce opacity-20" style={{ animationDelay: '1s', animationDuration: '4s' }}>🐝</div>
-      <div className="absolute bottom-40 left-1/4 animate-bounce opacity-20" style={{ animationDelay: '2s', animationDuration: '5s' }}>🐝</div>
-
-      {/* Padrão hexagonal leve no fundo */}
-      <div className="absolute inset-0 -z-10 opacity-10">
-        <svg className="w-full h-full" viewBox="0 0 100 100">
-          <pattern id="hexagons" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M10 0 L15 5 L15 15 L10 20 L5 15 L5 5 Z" fill="none" stroke="#FFB94F" strokeWidth="0.5"/>
-          </pattern>
-          <rect width="100" height="100" fill="url(#hexagons)" />
-        </svg>
+      <div
+        className="absolute top-20 left-10 animate-bounce"
+        style={{ animationDelay: "0s", animationDuration: "3s" }}
+      >
+        <span className="text-4xl opacity-20">🐝</span>
+      </div>
+      <div
+        className="absolute top-40 right-20 animate-bounce"
+        style={{ animationDelay: "1s", animationDuration: "4s" }}
+      >
+        <span className="text-3xl opacity-20">🐝</span>
+      </div>
+      <div
+        className="absolute bottom-40 left-1/4 animate-bounce"
+        style={{ animationDelay: "2s", animationDuration: "5s" }}
+      >
+        <span className="text-3xl opacity-20">🐝</span>
       </div>
 
-      {/* Conteúdo da página */}
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Encontre o Espaço Perfeito</h1>
+        <div className="text-center mb-12 relative">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Encontre o Espaço Perfeito
+          </h1>
           <p className="text-xl text-gray-600 mb-8">
             Reserve salas, recursos e itens para o seu próximo evento
           </p>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto mb-6">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
               <input
                 type="text"
                 placeholder="Pesquisar por nome ou descrição..."
