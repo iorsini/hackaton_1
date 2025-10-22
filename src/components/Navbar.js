@@ -13,18 +13,6 @@ export default function Navbar() {
               Espaço Comunitário
             </span>
           </div>
-
-          <div className="flex items-center space-x-6">
-            <a href="#" className="text-gray-700 hover:text-primary-500 font-medium transition">
-              Minhas Reservas
-            </a>
-            <a href="#" className="text-gray-700 hover:text-primary-500 font-medium transition">
-              Ajuda
-            </a>
-            <button className="bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 transition font-medium">
-              Entrar
-            </button>
-          </div>
         </div>
       </div>
     </nav>
