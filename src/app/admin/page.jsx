@@ -452,47 +452,75 @@ function BookingSection() {
 }
 
 function ResourceSection() {
-  const [resources, setResources] = useState([
-    {
-      id: "A1",
-      name: "Sala A1",
-      available: true,
-      resources: ["Projetor", "Whiteboard", "Chave"],
-      icon: "🏢",
-    },
-    {
-      id: "B2",
-      name: "Sala B2",
-      available: false,
-      resources: ["TV", "Chave"],
-      icon: "💼",
-    },
-    {
-      id: "C3",
-      name: "Sala C3",
-      available: true,
-      resources: ["Wi-Fi Premium"],
-      icon: "🖥️",
-    },
-  ]);
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const toggleStatus = (id) => {
-    setResources(
-      resources.map((room) =>
-        room.id === id ? { ...room, available: !room.available } : room
+  useEffect(() => {
+    async function fetchRooms() {
+      try {
+        const allRooms = await getRooms();
+        setRooms(allRooms);
+      } catch (err) {
+        console.error("Erro ao carregar salas:", err);
+        setRooms([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchRooms();
+  }, []);
+
+  const toggleStatus = async (id) => {
+    // Aqui você pode adicionar lógica para atualizar o status no backend
+    setRooms(
+      rooms.map((room) =>
+        room._id === id ? { ...room, isActive: !room.isActive } : room
       )
     );
   };
 
   const resourceIcons = {
     Projetor: "📽️",
+    "Quadro Branco": "📋",
     Whiteboard: "📋",
     Chave: "🔑",
     TV: "📺",
+    WiFi: "📡",
     "Wi-Fi Premium": "📡",
     "Adaptador HDMI": "🔌",
     "Controle Ar": "🌬️",
+    Videoconferência: "💻",
+    "Sistema de Som": "🔊",
+    Café: "☕",
+    Monitor: "🖥️",
+    Palco: "🎭",
+    Microfones: "🎤",
+    "Post-its": "📝",
+    "Mesas Modulares": "🪑",
   };
+
+  // Ícones para salas baseados na localização ou tipo
+  const getRoomIcon = (room) => {
+    if (room.location?.toLowerCase().includes("auditório") || 
+        room.name?.toLowerCase().includes("auditório")) return "🎭";
+    if (room.location?.toLowerCase().includes("conferência") || 
+        room.name?.toLowerCase().includes("conferência")) return "💼";
+    if (room.location?.toLowerCase().includes("brainstorm") || 
+        room.name?.toLowerCase().includes("brainstorm")) return "💡";
+    if (room.name?.toLowerCase().includes("privada")) return "🔒";
+    return "🏢";
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-2xl shadow-lg border-2 border-[#FFB94F] p-6">
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#FFB94F] mx-auto mb-4"></div>
+          <p className="text-[#8B4513] font-medium">Carregando salas...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border-2 border-[#FFB94F] p-6 hover:shadow-2xl transition-shadow duration-300">
@@ -502,108 +530,136 @@ function ResourceSection() {
           Gerenciar Recursos
         </h2>
 
-        <button className="px-4 py-2 bg-gradient-to-r from-[#48C957] to-[#3ab049] text-white rounded-full font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300">
-          + Novo Recurso
+        <button 
+          onClick={() => window.location.href = '/createroom'}
+          className="px-4 py-2 bg-gradient-to-r from-[#48C957] to-[#3ab049] text-white rounded-full font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+        >
+          + Nova Sala
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {resources.map((room) => (
-          <div
-            key={room.id}
-            className="group bg-gradient-to-br from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl border-2 border-[#FFB94F] hover:border-[#48C957] transition-all duration-300 transform hover:scale-105 hover:shadow-lg relative overflow-hidden"
-          >
-            {/* Padrão hexagonal decorativo */}
-            <div className="absolute -right-4 -top-4 opacity-5 transform rotate-12">
-              <svg className="w-24 h-24" viewBox="0 0 24 24">
-                <path d="M12 2L15 5 L15 9 L12 12 L9 9 L9 5 Z" fill="#FFB94F" />
-              </svg>
-            </div>
+      {rooms.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-6xl mb-4">📭</div>
+          <p className="text-gray-500">Nenhuma sala cadastrada</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {rooms.map((room) => (
+            <div
+              key={room._id}
+              className="group bg-gradient-to-br from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl border-2 border-[#FFB94F] hover:border-[#48C957] transition-all duration-300 transform hover:scale-105 hover:shadow-lg relative overflow-hidden"
+            >
+              {/* Padrão hexagonal decorativo */}
+              <div className="absolute -right-4 -top-4 opacity-5 transform rotate-12">
+                <svg className="w-24 h-24" viewBox="0 0 24 24">
+                  <path d="M12 2L15 5 L15 9 L12 12 L9 9 L9 5 Z" fill="#FFB94F" />
+                </svg>
+              </div>
 
-            <div className="relative z-10">
-              {/* Cabeçalho da sala */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-3xl">{room.icon}</span>
-                  <div>
-                    <p className="font-bold text-lg text-[#0C0C0C]">
-                      {room.name}
-                    </p>
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-bold mt-1 ${
-                        room.available
-                          ? "bg-[#48C957] text-white"
-                          : "bg-[#FFB94F] text-[#0C0C0C]"
-                      }`}
-                    >
-                      {room.available ? "✓ Livre" : "● Em uso"}
-                    </span>
+              <div className="relative z-10">
+                {/* Cabeçalho da sala */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl">{getRoomIcon(room)}</span>
+                    <div>
+                      <p className="font-bold text-lg text-[#0C0C0C]">
+                        {room.name}
+                      </p>
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-bold mt-1 ${
+                          room.isActive
+                            ? "bg-[#48C957] text-white"
+                            : "bg-[#FFB94F] text-[#0C0C0C]"
+                        }`}
+                      >
+                        {room.isActive ? "✓ Ativa" : "● Inativa"}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Lista de recursos */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {room.resources.map((res, i) => (
-                  <span
-                    key={i}
-                    className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1.5 rounded-full text-[#0C0C0C] font-medium shadow-sm flex items-center gap-1"
-                  >
-                    <span>{resourceIcons[res] || "📦"}</span>
-                    {res}
-                  </span>
-                ))}
-              </div>
+                {/* Informações da sala */}
+                <div className="mb-4 space-y-2">
+                  <p className="text-sm text-gray-600">
+                    <span className="font-semibold">Capacidade:</span> {room.capacity} pessoas
+                  </p>
+                  {room.location && (
+                    <p className="text-sm text-gray-600">
+                      <span className="font-semibold">Local:</span> {room.location}
+                    </p>
+                  )}
+                </div>
 
-              {/* Botão de ação */}
-              <button
-                onClick={() => toggleStatus(room.id)}
-                className={`w-full py-2.5 rounded-xl font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${
-                  room.available
-                    ? "bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] hover:from-[#e5a740] hover:to-[#FFB94F]"
-                    : "bg-gradient-to-r from-[#48C957] to-[#3ab049] text-white hover:from-[#3ab049] hover:to-[#48C957]"
-                }`}
-              >
-                {room.available ? (
-                  <>
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                      />
-                    </svg>
-                    Marcar Ocupada
-                  </>
+                {/* Lista de recursos */}
+                {room.resources && room.resources.length > 0 ? (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {room.resources.map((res, i) => (
+                      <span
+                        key={i}
+                        className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1.5 rounded-full text-[#0C0C0C] font-medium shadow-sm flex items-center gap-1"
+                      >
+                        <span>{resourceIcons[res] || "📦"}</span>
+                        {res}
+                      </span>
+                    ))}
+                  </div>
                 ) : (
-                  <>
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-                      />
-                    </svg>
-                    Liberar Sala
-                  </>
+                  <p className="text-xs text-gray-400 mb-4 italic">
+                    Nenhum recurso cadastrado
+                  </p>
                 )}
-              </button>
+
+                {/* Botão de ação */}
+                <button
+                  onClick={() => toggleStatus(room._id)}
+                  className={`w-full py-2.5 rounded-xl font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${
+                    room.isActive
+                      ? "bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] hover:from-[#e5a740] hover:to-[#FFB94F]"
+                      : "bg-gradient-to-r from-[#48C957] to-[#3ab049] text-white hover:from-[#3ab049] hover:to-[#48C957]"
+                  }`}
+                >
+                  {room.isActive ? (
+                    <>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        />
+                      </svg>
+                      Desativar Sala
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
+                        />
+                      </svg>
+                      Ativar Sala
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
