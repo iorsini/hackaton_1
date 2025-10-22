@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X, Calendar, Clock, User, Mail, MessageSquare, CheckCircle } from 'lucide-react';
+import {createBooking} from '../services/api';
 
 export default function ReservationModal({ room, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -19,24 +20,16 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/reservations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          room: room._id,
-        }),
+      const res = await createBooking(room._id,{
+        ...formData,
+        room: room._id,
       });
 
-      const data = await res.json();
-
-      if (data.success) {
+      if (res.success) {
         setShowSuccess(true);
         setTimeout(() => {
           onSuccess();
         }, 2000);
-      } else {
-        alert(data.error || 'Erro ao criar reserva');
       }
     } catch (error) {
       alert('Erro ao criar reserva');

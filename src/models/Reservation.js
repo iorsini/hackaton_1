@@ -32,7 +32,7 @@ const ReservationSchema = new mongoose.Schema(
     },
     purpose: {
       type: String,
-      required: [true, 'Finalidade é obrigatória'],
+      trim: true,
     },
 
     status: {
