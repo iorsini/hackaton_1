@@ -62,9 +62,9 @@ app.get('/api/salas/:id/bookings', async (req, res) => {
     res.status(500).json({ erro: 'Erro interno do servidor' });
   }
 });
-//para futuro uso - GET /api/salas/:id/available-dates - Retorna datas disponíveis para uma sala específica
 
-// GET /api/salas/:id/available-dates - Retorna datas disponíveis para uma sala
+
+//para futuro uso - GET /api/salas/:id/available-dates - Retorna datas disponíveis para uma sala específica
 app.get("/api/salas/:id/available-dates", async (req, res) => {
   try {
     const bookings = await booking.find({ 
