@@ -172,8 +172,8 @@ function SummaryCards() {
           fill="none"
           stroke="currentColor"
         >
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" strokeWidth={2} />
-          <circle cx="12" cy="7" r="4" strokeWidth={2} />
+          <rect x="2" y="4" width="20" height="14" rx="2" strokeWidth={2} />
+          <path d="M8 20h8" strokeWidth={2} strokeLinecap="round" />
         </svg>
       ),
     },
@@ -222,10 +222,9 @@ function SummaryCards() {
               <polygon
                 points="50,5 93,27.5 93,72.5 50,95 7,72.5 7,27.5"
                 fill={`url(#grad-${stat.id})`}
-                stroke="#8B4513"
+                stroke="#b36608ff"
                 strokeWidth="3"
               />
-             
             </svg>
 
             {/* Conteúdo do hexágono */}
@@ -303,6 +302,17 @@ function BookingSection() {
     },
   ];
 
+  // ícones para os itens das reservas — usamos os mesmos da seção de recursos
+  const resourceIcons = {
+    Projetor: "📽️",
+    Whiteboard: "📋",
+    Chave: "🔑",
+    TV: "📺",
+    "Wi-Fi Premium": "📡",
+    "Adaptador HDMI": "🔌", // plugzinho pra representar o adaptador
+    "Controle Ar": "🌬️", // vento pra simbolizar o ar-condicionado
+  };
+
   const handleCancel = (id, user) => {
     if (confirm(`Cancelar reserva de ${user}?`)) {
       alert(`Reserva cancelada com sucesso! 🐝`);
@@ -335,7 +345,7 @@ function BookingSection() {
             <div className="flex justify-between items-start">
               <div className="flex items-start space-x-4 flex-1">
                 {/* Avatar */}
-                <div className="text-4xl bg-[#FFB94F] rounded-full w-14 h-14 flex items-center justify-center shadow-md">
+                <div className="text-4xl bg-[#48C957] rounded-full w-14 h-14 flex items-center justify-center shadow-md">
                   {booking.avatar}
                 </div>
 
@@ -373,9 +383,11 @@ function BookingSection() {
                       {booking.items.map((item, i) => (
                         <span
                           key={i}
-                          className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1 rounded-full text-[#0C0C0C] font-medium shadow-sm"
+                          className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1 rounded-full text-[#0C0C0C] font-medium shadow-sm flex items-center gap-1"
                         >
-                          🔑 {item}
+                          {/* ícone do item, se tiver — senão, caímos no padrão 📦 */}
+                          <span>{resourceIcons[item] || "📦"}</span>
+                          {item}
                         </span>
                       ))}
                     </div>
@@ -449,15 +461,18 @@ function ResourceSection() {
     Chave: "🔑",
     TV: "📺",
     "Wi-Fi Premium": "📡",
+    "Adaptador HDMI": "🔌",
+    "Controle Ar": "🌬️",
   };
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border-2 border-[#FFB94F] p-6 hover:shadow-2xl transition-shadow duration-300">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-[#0C0C0C] flex items-center">
-          <span className="mr-3 text-3xl">🏗️</span>
+          <span className="mr-3 text-3xl">🧑‍💻</span>
           Gerenciar Recursos
         </h2>
+
         <button className="px-4 py-2 bg-gradient-to-r from-[#48C957] to-[#3ab049] text-white rounded-full font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300">
           + Novo Recurso
         </button>
