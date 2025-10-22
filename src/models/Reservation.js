@@ -35,15 +35,8 @@ const ReservationSchema = new mongoose.Schema(
       trim: true,
     },
 
-    status: {
-      type: String,
-      enum: ['confirmed', 'cancelled', 'completed'],
-      default: 'confirmed',
-    },
   },
-  {
-    timestamps: true,
-  }
+
 );
 
 // Index para buscar reservas por sala e data
