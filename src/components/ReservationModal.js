@@ -1,14 +1,11 @@
 import { useState } from 'react';
-import { X, Calendar, Clock, User, Mail, MessageSquare, CheckCircle, Users } from 'lucide-react';
-import {createBooking} from '../services/api';
+import { X, Calendar, User, Mail, MessageSquare, CheckCircle, Users } from 'lucide-react';
 
 export default function ReservationModal({ room, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
     userName: '',
     userEmail: '',
     date: '',
-    startTime: '',
-    endTime: '',
     purpose: '',
     selectedResources: [],
     numberOfPeople: 1
@@ -39,20 +36,31 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
     setLoading(true);
 
     try {
-      const res = await createBooking(room._id, {
-        ...formData,
-        room: room._id,
+      const response = await fetch(`/api/salas/${room._id}/booking`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          room: room._id,
+        }),
       });
 
-      if (res.success) {
+      const result = await response.json();
+
+      if (result.success || response.ok) {
         setShowSuccess(true);
         setTimeout(() => {
           onSuccess();
-        }, 2000);
+        }, 3000);
+      } else {
+        alert(result.error || 'Erro ao criar reserva');
+        setLoading(false);
       }
     } catch (error) {
-      alert('Erro ao criar reserva');
-    } finally {
+      console.error('Erro:', error);
+      alert('Erro ao criar reserva. Tente novamente.');
       setLoading(false);
     }
   };
@@ -74,11 +82,19 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
             <CheckCircle className="text-green-500" size={48} />
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-2">
-            Reserva Confirmada!
+            🐝 Reserva Confirmada!
           </h3>
-          <p className="text-gray-600">
-            Você receberá um email de confirmação em breve.
+          <p className="text-gray-600 mb-4">
+            Sua reserva foi realizada com sucesso!
           </p>
+          <div className="bg-honey-cream border-2 border-honey-primary rounded-lg p-4">
+            <p className="text-sm text-gray-700">
+              📧 <strong>Email de confirmação enviado!</strong>
+            </p>
+            <p className="text-xs text-gray-600 mt-2">
+              Verifique sua caixa de entrada em <strong>{formData.userEmail}</strong>
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -119,7 +135,7 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
                 required
                 value={formData.userName}
                 onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FFB94F] focus:border-transparent outline-none"
                 placeholder="Seu nome"
               />
             </div>
@@ -133,7 +149,7 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
                 required
                 value={formData.userEmail}
                 onChange={(e) => setFormData({ ...formData, userEmail: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FFB94F] focus:border-transparent outline-none"
                 placeholder="seu@email.com"
               />
             </div>
@@ -155,7 +171,7 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
               className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:border-transparent outline-none ${
                 capacityError 
                   ? 'border-red-500 focus:ring-red-500' 
-                  : 'border-gray-300 focus:ring-primary-500'
+                  : 'border-gray-300 focus:ring-[#FFB94F]'
               }`}
               placeholder="Quantas pessoas?"
             />
@@ -169,48 +185,23 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
             </p>
           </div>
 
-          {/* Date and Time */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                <Calendar size={16} />
-                Data
-              </label>
-              <input
-                type="date"
-                required
-                min={new Date().toISOString().split('T')[0]}
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-              />
-            </div>
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                <Clock size={16} />
-                Início
-              </label>
-              <input
-                type="time"
-                required
-                value={formData.startTime}
-                onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-              />
-            </div>
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                <Clock size={16} />
-                Fim
-              </label>
-              <input
-                type="time"
-                required
-                value={formData.endTime}
-                onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
-              />
-            </div>
+          {/* Date ONLY - Removed Time Fields */}
+          <div>
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+              <Calendar size={16} />
+              Data da Reserva
+            </label>
+            <input
+              type="date"
+              required
+              min={new Date().toISOString().split('T')[0]}
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FFB94F] focus:border-transparent outline-none"
+            />
+            <p className="text-sm text-[#FFB94F] mt-2 flex items-center gap-1 font-semibold">
+              🕐 A sala será reservada para o dia completo
+            </p>
           </div>
 
           {/* Resources */}
@@ -227,8 +218,8 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
                     onClick={() => toggleResource(resource)}
                     className={`px-4 py-2 rounded-xl border-2 transition ${
                       formData.selectedResources.includes(resource)
-                        ? 'border-primary-500 bg-primary-50 text-primary-700'
-                        : 'border-gray-300 bg-white text-gray-700 hover:border-primary-300'
+                        ? 'border-[#FFB94F] bg-[#FFF8E7] text-[#0C0C0C] font-bold'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-[#FFB94F]'
                     }`}
                   >
                     {resource}
@@ -249,7 +240,7 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
               value={formData.purpose}
               onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
               rows={3}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#FFB94F] focus:border-transparent outline-none resize-none"
               placeholder="Descreva brevemente o propósito da reserva..."
             />
           </div>
@@ -258,9 +249,9 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
           <button
             type="submit"
             disabled={loading || !!capacityError}
-            className="w-full bg-[#E69500] text-white py-4 rounded-xl hover:bg-primary-600 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+            className="w-full bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] py-4 rounded-xl hover:from-[#e5a740] hover:to-[#FFB94F] transition font-bold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
           >
-            {loading ? 'Processando...' : 'Confirmar Reserva'}
+            {loading ? '🐝 Processando...' : '✨ Confirmar Reserva'}
           </button>
         </form>
       </div>

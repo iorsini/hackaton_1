@@ -1,7 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllBookings, getRooms } from "../../services/api";
+import { Calendar, X } from "lucide-react";
+
+// Funções API (substitua pelos seus imports reais)
+const getAllBookings = async () => {
+  const response = await fetch('/api/bookings');
+  return response.json();
+};
+
+const getRooms = async () => {
+  const response = await fetch('/api/salas');
+  return response.json();
+};
 
 // ======================
 // COMPONENTES INTERNOS
@@ -258,21 +269,10 @@ function BookingSection() {
                             {new Date(booking.date).toLocaleDateString('pt-PT')}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                          </svg>
-                          <span className="font-medium bg-[#FFE0A3] px-2 py-1 rounded">
-                            🕐 Dia Completo
-                          </span>
-                        </div>
                       </div>
 
                       {booking.numberOfPeople && (
                         <div className="flex items-center gap-2 text-sm text-gray-700 mb-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                          </svg>
                           <span className="font-medium">{booking.numberOfPeople} pessoa{booking.numberOfPeople > 1 ? 's' : ''}</span>
                         </div>
                       )}
@@ -321,188 +321,13 @@ function BookingSection() {
   );
 }
 
-function CalendarSection() {
-  const [bookings, setBookings] = useState([]);
-  const [rooms, setRooms] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState('all');
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const [allBookings, allRooms] = await Promise.all([
-          getAllBookings(),
-          getRooms()
-        ]);
-        setBookings(allBookings);
-        setRooms(allRooms);
-      } catch (err) {
-        console.error("Erro ao carregar dados:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
-
-  const getDaysInMonth = (date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
-
-    return { daysInMonth, startingDayOfWeek, year, month };
-  };
-
-  const isDateBooked = (day) => {
-    const checkDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    checkDate.setHours(0, 0, 0, 0);
-
-    return bookings.some(booking => {
-      const bookingDate = new Date(booking.date);
-      bookingDate.setHours(0, 0, 0, 0);
-      
-      const roomMatch = selectedRoom === 'all' || booking.room === selectedRoom;
-      const dateMatch = bookingDate.getTime() === checkDate.getTime();
-      
-      return roomMatch && dateMatch;
-    });
-  };
-
-  const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentMonth);
-
-  const prevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
-  };
-
-  const nextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
-  };
-
-  const monthNames = [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-  ];
-
-  return (
-    <div className="bg-white rounded-2xl shadow-lg border-2 border-[#FFB94F] p-6 hover:shadow-2xl transition-shadow duration-300">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-[#0C0C0C] flex items-center">
-          <span className="mr-3 text-3xl">📅</span>
-          Calendário de Reservas
-        </h2>
-
-        <div className="flex items-center gap-3">
-          <select
-            value={selectedRoom}
-            onChange={(e) => setSelectedRoom(e.target.value)}
-            className="px-4 py-2 border-2 border-[#FFB94F] rounded-full text-sm font-medium text-[#0C0C0C] focus:ring-2 focus:ring-[#48C957] focus:border-transparent outline-none"
-          >
-            <option value="all">Todas as Salas</option>
-            {rooms.map(room => (
-              <option key={room._id} value={room._id}>{room.name}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {loading ? (
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-[#FFB94F] mx-auto"></div>
-        </div>
-      ) : (
-        <div>
-          {/* Controles do mês */}
-          <div className="flex items-center justify-between mb-6">
-            <button
-              onClick={prevMonth}
-              className="p-2 hover:bg-[#FFF8E7] rounded-full transition"
-            >
-              <svg className="w-6 h-6 text-[#0C0C0C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            
-            <h3 className="text-xl font-bold text-[#0C0C0C]">
-              {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-            </h3>
-            
-            <button
-              onClick={nextMonth}
-              className="p-2 hover:bg-[#FFF8E7] rounded-full transition"
-            >
-              <svg className="w-6 h-6 text-[#0C0C0C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Dias da semana */}
-          <div className="grid grid-cols-7 gap-2 mb-2">
-            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
-              <div key={day} className="text-center text-sm font-bold text-[#8B4513] py-2">
-                {day}
-              </div>
-            ))}
-          </div>
-
-          {/* Dias do mês */}
-          <div className="grid grid-cols-7 gap-2">
-            {[...Array(startingDayOfWeek)].map((_, i) => (
-              <div key={`empty-${i}`} className="aspect-square"></div>
-            ))}
-            
-            {[...Array(daysInMonth)].map((_, i) => {
-              const day = i + 1;
-              const isBooked = isDateBooked(day);
-              const isToday = new Date().getDate() === day && 
-                              new Date().getMonth() === currentMonth.getMonth() &&
-                              new Date().getFullYear() === currentMonth.getFullYear();
-
-              return (
-                <div
-                  key={day}
-                  className={`aspect-square flex items-center justify-center rounded-lg text-sm font-semibold transition-all cursor-pointer
-                    ${isToday ? 'ring-2 ring-[#48C957]' : ''}
-                    ${isBooked 
-                      ? 'bg-[#FFB94F] text-[#0C0C0C] hover:bg-[#e5a740]' 
-                      : 'bg-[#F8F4E3] text-gray-700 hover:bg-[#FFE0A3]'
-                    }`}
-                >
-                  {day}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Legenda */}
-          <div className="flex items-center justify-center gap-6 mt-6 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-[#FFB94F]"></div>
-              <span className="text-gray-700">Ocupado</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded bg-[#F8F4E3]"></div>
-              <span className="text-gray-700">Livre</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded border-2 border-[#48C957]"></div>
-              <span className="text-gray-700">Hoje</span>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
 function RoomStatusSection() {
   const [rooms, setRooms] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   useEffect(() => {
     async function fetchData() {
@@ -521,17 +346,6 @@ function RoomStatusSection() {
     }
     fetchData();
   }, []);
-
-  const isRoomOccupiedToday = (roomId) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    return bookings.some(booking => {
-      const bookingDate = new Date(booking.date);
-      bookingDate.setHours(0, 0, 0, 0);
-      return booking.room === roomId && bookingDate.getTime() === today.getTime();
-    });
-  };
 
   const resourceIcons = {
     Projetor: "📽️",
@@ -559,13 +373,201 @@ function RoomStatusSection() {
     return "🏢";
   };
 
+  const isRoomOccupiedOnDate = (roomId, date) => {
+    const checkDate = new Date(date);
+    checkDate.setHours(0, 0, 0, 0);
+    
+    return bookings.find(booking => {
+      const bookingDate = new Date(booking.date);
+      bookingDate.setHours(0, 0, 0, 0);
+      return booking.room === roomId && bookingDate.getTime() === checkDate.getTime();
+    });
+  };
+
+  const getRoomStatusOnDate = (roomId, date) => {
+    const booking = isRoomOccupiedOnDate(roomId, date);
+    if (!booking) return { status: "free", label: "✓ Livre", color: "bg-[#48C957]" };
+    
+    return {
+      status: "occupied",
+      label: "● Ocupada",
+      color: "bg-[#FFB94F]",
+      booking: booking,
+    };
+  };
+
+  const getDaysInMonth = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay();
+    return { daysInMonth, startingDayOfWeek };
+  };
+
+  const hasBookingOnDay = (day) => {
+    const checkDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    checkDate.setHours(0, 0, 0, 0);
+
+    return bookings.some(booking => {
+      const bookingDate = new Date(booking.date);
+      bookingDate.setHours(0, 0, 0, 0);
+      return bookingDate.getTime() === checkDate.getTime();
+    });
+  };
+
+  const isSelectedDay = (day) => {
+    const checkDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    return selectedDate.toDateString() === checkDate.toDateString();
+  };
+
+  const selectDay = (day) => {
+    const newDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    setSelectedDate(newDate);
+    setShowCalendar(false);
+  };
+
+  const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentMonth);
+
+  const monthNames = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
+
+  const prevMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg border-2 border-[#FFB94F] p-6 hover:shadow-2xl transition-shadow duration-300">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-[#0C0C0C] flex items-center">
           <span className="mr-3 text-3xl">🏢</span>
-          Estado das Salas
+          Controle de Recursos
         </h2>
+      </div>
+
+      <div className="bg-gradient-to-r from-[#FFF8E7] to-[#F8F4E3] rounded-xl p-4 mb-6 border border-[#FFB94F]">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">📅</div>
+            <div>
+              <p className="text-xs text-gray-600 font-medium">Visualizando</p>
+              <p className="text-lg font-bold text-[#0C0C0C]">
+                {selectedDate.toLocaleDateString('pt-PT', { 
+                  day: 'numeric', 
+                  month: 'long',
+                  year: 'numeric'
+                })}
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setShowCalendar(!showCalendar)}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] rounded-full hover:from-[#e5a740] hover:to-[#FFB94F] transition-all duration-300 font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105"
+          >
+            <Calendar size={16} />
+            Alterar Data
+          </button>
+        </div>
+
+        {showCalendar && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl p-6 max-w-md w-full">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-[#0C0C0C]">Selecionar Data</h3>
+                <button
+                  onClick={() => setShowCalendar(false)}
+                  className="text-gray-400 hover:text-gray-600 transition"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between mb-4">
+                <button
+                  onClick={prevMonth}
+                  className="p-2 hover:bg-[#FFF8E7] rounded-full transition"
+                >
+                  <svg className="w-6 h-6 text-[#0C0C0C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                
+                <h4 className="text-lg font-bold text-[#0C0C0C]">
+                  {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                </h4>
+                
+                <button
+                  onClick={nextMonth}
+                  className="p-2 hover:bg-[#FFF8E7] rounded-full transition"
+                >
+                  <svg className="w-6 h-6 text-[#0C0C0C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-7 gap-1 mb-2">
+                {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((day, i) => (
+                  <div key={i} className="text-center text-xs font-bold text-[#8B4513] py-2">
+                    {day}
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-1">
+                {[...Array(startingDayOfWeek)].map((_, i) => (
+                  <div key={`empty-${i}`} className="aspect-square"></div>
+                ))}
+                
+                {[...Array(daysInMonth)].map((_, i) => {
+                  const day = i + 1;
+                  const hasBooking = hasBookingOnDay(day);
+                  const isSelected = isSelectedDay(day);
+                  const isToday = new Date().getDate() === day && 
+                                  new Date().getMonth() === currentMonth.getMonth() &&
+                                  new Date().getFullYear() === currentMonth.getFullYear();
+
+                  return (
+                    <button
+                      key={day}
+                      onClick={() => selectDay(day)}
+                      className={`aspect-square flex items-center justify-center rounded-lg text-sm font-semibold transition-all cursor-pointer relative
+                        ${isSelected ? 'bg-[#48C957] text-white scale-110 shadow-lg' : ''}
+                        ${!isSelected && hasBooking ? 'bg-[#FFB94F] text-[#0C0C0C] hover:bg-[#e5a740]' : ''}
+                        ${!isSelected && !hasBooking ? 'bg-[#F8F4E3] text-gray-700 hover:bg-[#FFE0A3]' : ''}
+                        ${isToday && !isSelected ? 'ring-2 ring-[#48C957]' : ''}
+                      `}
+                    >
+                      {day}
+                      {hasBooking && !isSelected && (
+                        <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#0C0C0C] rounded-full"></div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center justify-center gap-4 mt-6 text-xs">
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded bg-[#FFB94F]"></div>
+                  <span>Com reservas</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded bg-[#F8F4E3]"></div>
+                  <span>Sem reservas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {loading ? (
@@ -580,7 +582,7 @@ function RoomStatusSection() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {rooms.map((room) => {
-            const isOccupied = isRoomOccupiedToday(room._id);
+            const roomStatus = getRoomStatusOnDate(room._id, selectedDate);
             
             return (
               <div
@@ -601,41 +603,52 @@ function RoomStatusSection() {
                         <p className="font-bold text-lg text-[#0C0C0C]">
                           {room.name}
                         </p>
-                        <span
-                          className={`inline-block px-3 py-1 rounded-full text-xs font-bold mt-1 ${
-                            isOccupied
-                              ? "bg-[#FFB94F] text-[#0C0C0C]"
-                              : "bg-[#48C957] text-white"
-                          }`}
-                        >
-                          {isOccupied ? "● Ocupada Hoje" : "✓ Livre Hoje"}
-                        </span>
+                        {room.location && (
+                          <p className="text-xs text-gray-600">{room.location}</p>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  <div className="mb-4 space-y-2">
+                  <div className="mb-4">
+                    <span
+                      className={`inline-block px-4 py-2 rounded-full text-sm font-bold ${roomStatus.color} text-white shadow-md`}
+                    >
+                      {roomStatus.label}
+                    </span>
+                  </div>
+
+                  {roomStatus.status === "occupied" && roomStatus.booking && (
+                    <div className="bg-white bg-opacity-60 rounded-lg p-3 mb-4 border border-[#FFB94F]">
+                      <p className="text-sm text-gray-700">
+                        <span className="font-semibold">Reservado por:</span> {roomStatus.booking.userName}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <span className="font-semibold">Pessoas:</span> {roomStatus.booking.numberOfPeople}
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="mb-4">
                     <p className="text-sm text-gray-600">
                       <span className="font-semibold">Capacidade:</span> {room.capacity} pessoas
                     </p>
-                    {room.location && (
-                      <p className="text-sm text-gray-600">
-                        <span className="font-semibold">Local:</span> {room.location}
-                      </p>
-                    )}
                   </div>
 
                   {room.resources && room.resources.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {room.resources.map((res, i) => (
-                        <span
-                          key={i}
-                          className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1.5 rounded-full text-[#0C0C0C] font-medium shadow-sm flex items-center gap-1"
-                        >
-                          <span>{resourceIcons[res] || "📦"}</span>
-                          {res}
-                        </span>
-                      ))}
+                    <div>
+                      <p className="text-xs text-gray-600 font-semibold mb-2">Recursos:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {room.resources.map((res, i) => (
+                          <span
+                            key={i}
+                            className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1.5 rounded-full text-[#0C0C0C] font-medium shadow-sm flex items-center gap-1"
+                          >
+                            <span>{resourceIcons[res] || "📦"}</span>
+                            {res}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -694,7 +707,6 @@ export default function AdminPage() {
         <SummaryCards reservationsCount={bookings.length} roomsCount={rooms.length} />
         <div className="space-y-8">
           <BookingSection />
-          <CalendarSection />
           <RoomStatusSection />
         </div>
       </div>
