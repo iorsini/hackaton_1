@@ -1,19 +1,8 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import Room from '../src/models/Room.js';
 
-dotenv.config({ path: '.env.local' });
-
-const RoomSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  capacity: Number,
-  resources: [String],
-  image: String,
-  isActive: Boolean,
-  location: String,
-});
-
-const Room = mongoose.models.Room || mongoose.model('Room', RoomSchema);
+dotenv.config({ path: '.env' });
 
 const sampleRooms = [
   {
@@ -77,11 +66,9 @@ async function seedDatabase() {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('✅ Conectado ao MongoDB');
 
-    // Limpar coleção existente (opcional)
     await Room.deleteMany({});
     console.log('🗑️  Salas antigas removidas');
 
-    // Inserir novas salas
     await Room.insertMany(sampleRooms);
     console.log(`✅ ${sampleRooms.length} salas adicionadas com sucesso!`);
 

@@ -1,5 +1,5 @@
-import { MapPin, Users, Wifi, Monitor, Coffee } from 'lucide-react';
-import Image from 'next/image';
+import { MapPin, Users, Wifi, Monitor, Coffee } from "lucide-react";
+import Image from "next/image";
 
 export default function RoomCard({ room, onReserve }) {
   const getResourceIcon = (resource) => {
@@ -18,12 +18,10 @@ export default function RoomCard({ room, onReserve }) {
       {/* Image */}
       <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary-100 to-primary-200">
         {room.image ? (
-          <Image
+          <img
             src={room.image}
             alt={room.name}
-            fill
-            className="object-cover group-hover:scale-110 transition-transform duration-300"
-            priority
+            className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -40,7 +38,9 @@ export default function RoomCard({ room, onReserve }) {
       {/* Content */}
       <div className="flex flex-col flex-grow p-6">
         <h3 className="text-xl font-bold text-gray-900 mb-2">{room.name}</h3>
-        <p className="text-gray-600 mb-4 line-clamp-2 flex-grow">{room.description}</p>
+        <p className="text-gray-600 mb-4 flex-grow line-clamp-2">
+          {room.description}
+        </p>
 
         {/* Resources */}
         {room.resources && room.resources.length > 0 && (
@@ -61,7 +61,7 @@ export default function RoomCard({ room, onReserve }) {
         <div className="mt-auto">
           <button
             onClick={onReserve}
-            className="w-full bg-[#E69500] text-white py-3 rounded-xl hover:bg-primary-600 transition font-semibold shadow-sm hover:shadow-md"
+            className="w-full bg-[#E69500] text-white py-3 rounded-xl hover:bg-[#cc7f00] transition font-semibold shadow-sm hover:shadow-md"
           >
             Reservar Agora
           </button>
