@@ -21,7 +21,7 @@ export async function sendReservationEmail({ to, reservation, room }) {
           <p><strong>Horário:</strong> ${reservation.startTime} - ${reservation.endTime}</p>
           <p><strong>Finalidade:</strong> ${reservation.purpose}</p>
           ${reservation.selectedResources.length > 0 
-            ? `<p><strong>Recursos:</strong> ${reservation.selectedResources.join(', ')}</p>` 
+            ? `<p><strong>Recursos/Itens:</strong> ${reservation.selectedResources.join(', ')}</p>` 
             : ''
           }
         </div>

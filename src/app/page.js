@@ -42,7 +42,7 @@ export default function Home() {
           Encontre o Espaço Perfeito
         </h1>
         <p className="text-xl text-gray-600 mb-8">
-          Reserve salas e recursos para o seu próximo evento
+          Reserve salas, recursos e itens para o seu próximo evento
         </p>
 
         {/* Search Bar */}

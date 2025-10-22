@@ -170,7 +170,7 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
           {room.resources && room.resources.length > 0 && (
             <div>
               <label className="text-sm font-medium text-gray-700 mb-3 block">
-                Recursos Necessários
+                Recursos e Itens Necessários
               </label>
               <div className="flex flex-wrap gap-2">
                 {room.resources.map((resource, index) => (
