@@ -5,6 +5,9 @@ const getRooms = async () => {
   const response = await fetch('/api/salas');
   return response.json();
 };
+
+
+
 // Detalhes da sala (para recursos)
 const getRoomDetails = async (roomId) => {
   const response = await fetch(`/api/salas/${roomId}`);
@@ -12,11 +15,14 @@ const getRoomDetails = async (roomId) => {
 };
 
 
+
 // Datas disponíveis para uma sala
 const getAvailableDates = async (roomId) => {
   const response = await fetch(`/api/salas/${roomId}/available-dates`);
   return response.json();
 };
+
+
 
 // Cria uma nova reserva para uma sala específica
 const createBooking = async (roomId, bookingData) => {
@@ -33,11 +39,24 @@ const createBooking = async (roomId, bookingData) => {
 
 // ADMIN
 
+
+const deleteBooking = async (id) => {
+  const response = await fetch(`/api/bookings/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Erro ao deletar reserva');
+  }
+
+}
 // Salas reservadas
 const getAllBookings = async () => {
   const response = await fetch('/api/bookings');
   return response.json();
 }
+
+
+
 
 // Sala específica reservada
 const getRoomBookings = async (roomId) => {
@@ -62,4 +81,5 @@ export {
   getAvailableDates,
   createBooking,
   createRoom,
+  deleteBooking
 };
