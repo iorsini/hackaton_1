@@ -26,6 +26,7 @@ app.get('/api/salas', async (req, res) => {
     res.status(500).json({ erro: 'Erro interno do servidor' });
   }
 });
+
 // GET /api/salas/:id - Retorna detalhes de uma sala específica
 app.get('/api/salas/:id', async (req, res) => {
   try {
@@ -36,10 +37,11 @@ app.get('/api/salas/:id', async (req, res) => {
     res.status(500).json({ erro: 'Erro interno do servidor' });
   }
 });
-//GET /api/bookings - Retorna todas as reservas
+
+// GET /api/bookings - Retorna todas as reservas ativas
 app.get('/api/bookings', async (req, res) => {
   try {
-    const bookings = await booking.find();
+    const bookings = await booking.find({ status: 'active' }).populate('room');
     res.json(bookings);
   } catch (error) {
     console.error('Erro ao carregar reservas:', error);
@@ -47,10 +49,13 @@ app.get('/api/bookings', async (req, res) => {
   }
 });
 
-// GET /api/salas/:id/booking - Retorna reservas de uma sala específica
+// GET /api/salas/:id/bookings - Retorna reservas de uma sala específica
 app.get('/api/salas/:id/bookings', async (req, res) => {
   try {
-    const bookings = await booking.find({ room: req.params.id });
+    const bookings = await booking.find({ 
+      room: req.params.id,
+      status: 'active'
+    });
     res.json(bookings);
   } catch (error) {
     console.error('Erro ao carregar reservas:', error);
@@ -58,11 +63,18 @@ app.get('/api/salas/:id/bookings', async (req, res) => {
   }
 });
 
+// GET /api/salas/:id/available-dates - Retorna datas disponíveis para uma sala
 app.get("/api/salas/:id/available-dates", async (req, res) => {
   try {
-    const bookings = await booking.find({ room: req.params.id });
-    const unavailableDates = bookings.map(booking => booking.date);
-    res.json({ availableDates: getAvailableDates(unavailableDates) });
+    const bookings = await booking.find({ 
+      room: req.params.id,
+      status: 'active'
+    });
+    const unavailableDates = bookings.map(b => {
+      const date = new Date(b.date);
+      return date.toISOString().split('T')[0];
+    });
+    res.json({ unavailableDates });
   } catch (error) {
     console.error('Erro ao carregar datas disponíveis:', error);
     res.status(500).json({ erro: 'Erro interno do servidor' });
@@ -72,24 +84,64 @@ app.get("/api/salas/:id/available-dates", async (req, res) => {
 // POST /api/salas/:id/booking - Cria uma nova reserva para uma sala específica
 app.post('/api/salas/:id/booking', async (req, res) => {
   try {
+    // Normalizar a data para início do dia
+    const selectedDate = new Date(req.body.date);
+    selectedDate.setHours(0, 0, 0, 0);
+    
+    const nextDay = new Date(selectedDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+
+    // Verificar se já existe reserva ativa para este dia
+    const existingBooking = await booking.findOne({
+      room: req.params.id,
+      date: { $gte: selectedDate, $lt: nextDay },
+      status: 'active'
+    });
+
+    if (existingBooking) {
+      return res.status(409).json({ 
+        success: false,
+        error: `Esta sala já está reservada para ${selectedDate.toLocaleDateString('pt-PT')}` 
+      });
+    }
+
+    // Verificar capacidade
+    const roomData = await room.findById(req.params.id);
+    if (req.body.numberOfPeople > roomData.capacity) {
+      return res.status(400).json({
+        success: false,
+        error: `Esta sala suporta no máximo ${roomData.capacity} pessoas`
+      });
+    }
+
     const newBooking = new booking({
       room: req.params.id,
       userName: req.body.userName,
       userEmail: req.body.userEmail,
-      date: req.body.date,
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
+      date: selectedDate,
       purpose: req.body.purpose,
+      numberOfPeople: req.body.numberOfPeople,
+      selectedResources: req.body.selectedResources || [],
+      status: 'active'
     });
 
     const savedBooking = await newBooking.save();
-    res.status(201).json(savedBooking);
+    const populatedBooking = await booking.findById(savedBooking._id).populate('room');
+    
+    res.status(201).json({ 
+      success: true, 
+      data: populatedBooking 
+    });
   } catch (error) {
     console.error('Erro ao criar reserva:', error);
-    res.status(500).json({ erro: 'Erro interno do servidor' });
+    res.status(500).json({ 
+      success: false,
+      error: 'Erro interno do servidor' 
+    });
   }
 });
 
+// POST /api/salas - Cria uma nova sala
 app.post('/api/salas', async (req, res) => {
   try {
     const newRoom = new room(req.body);
@@ -101,7 +153,7 @@ app.post('/api/salas', async (req, res) => {
   }
 });
 
-// ===== INICIALIZAÇÃO DO SERVIDOR (também não se deve mexer)=====
+// ===== INICIALIZAÇÃO DO SERVIDOR =====
 
 app.use((req, res) => {
   return handle(req, res);
@@ -114,7 +166,7 @@ const iniciarServidor = async () => {
     await connectDB();
     await nextApp.prepare();
     app.listen(PORT, () => {
-      console.log(`Servidor Next.js + Express a correr em http://localhost:${PORT}`);
+      console.log(`🐝 Servidor Honeycomb rodando em http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error('Erro ao iniciar servidor:', error);

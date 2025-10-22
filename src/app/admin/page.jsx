@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllBookings,getRooms } from "../../services/api";
+import { getAllBookings, getRooms } from "../../services/api";
 
 // ======================
 // COMPONENTES INTERNOS
@@ -10,7 +10,6 @@ import { getAllBookings,getRooms } from "../../services/api";
 function AdminHeader() {
   return (
     <div className="text-center mb-12 relative">
-      {/* Ícone de colmeia em formato de camadas */}
       <div className="inline-block p-5 mb-6 transform hover:scale-110 transition-transform duration-300">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -18,75 +17,13 @@ function AdminHeader() {
           viewBox="0 0 100 100"
           fill="none"
         >
-          {/* Camadas da colmeia */}
-          {/* Topo */}
-          <ellipse
-            cx="50"
-            cy="15"
-            rx="20"
-            ry="8"
-            fill="#FFB94F"
-            stroke="#FFF"
-            strokeWidth="2"
-          />
-
-          {/* Segunda camada */}
-          <ellipse
-            cx="50"
-            cy="28"
-            rx="28"
-            ry="10"
-            fill="#FFB94F"
-            stroke="#FFF"
-            strokeWidth="2"
-          />
-
-          {/* Terceira camada (maior) */}
-          <ellipse
-            cx="50"
-            cy="43"
-            rx="35"
-            ry="11"
-            fill="#e5a740"
-            stroke="#FFF"
-            strokeWidth="2"
-          />
-
-          {/* Quarta camada (maior ainda) */}
-          <ellipse
-            cx="50"
-            cy="58"
-            rx="38"
-            ry="12"
-            fill="#FFB94F"
-            stroke="#FFF"
-            strokeWidth="2"
-          />
-
-          {/* Quinta camada */}
-          <ellipse
-            cx="50"
-            cy="74"
-            rx="32"
-            ry="10"
-            fill="#e5a740"
-            stroke="#FFF"
-            strokeWidth="2"
-          />
-
-          {/* Base */}
-          <ellipse
-            cx="50"
-            cy="87"
-            rx="25"
-            ry="9"
-            fill="#FFB94F"
-            stroke="#FFF"
-            strokeWidth="2"
-          />
-
-          {/* Entrada da colmeia (buraquinho) */}
-          <ellipse cx="50" cy="58" rx="6" ry="8" fill="#0C0C0C" />
+          <ellipse cx="50" cy="15" rx="20" ry="8" fill="#FFB94F" stroke="#FFF" strokeWidth="2"/>
+          <ellipse cx="50" cy="28" rx="28" ry="10" fill="#FFB94F" stroke="#FFF" strokeWidth="2"/>
+          <ellipse cx="50" cy="43" rx="35" ry="11" fill="#e5a740" stroke="#FFF" strokeWidth="2"/>
+          <ellipse cx="50" cy="58" rx="38" ry="12" fill="#FFB94F" stroke="#FFF" strokeWidth="2"/>
+          <ellipse cx="50" cy="74" rx="32" ry="10" fill="#e5a740" stroke="#FFF" strokeWidth="2"/>
+          <ellipse cx="50" cy="87" rx="25" ry="9" fill="#FFB94F" stroke="#FFF" strokeWidth="2"/>
+          <ellipse cx="50" cy="58" rx="6" ry="8" fill="#0C0C0C"/>
         </svg>
       </div>
 
@@ -97,23 +34,10 @@ function AdminHeader() {
         Gerencie reservas e recursos do seu coworking
       </p>
 
-      {/* Padrão hexagonal de fundo */}
       <div className="absolute -z-10 inset-0 opacity-10">
         <svg className="w-full h-full" viewBox="0 0 100 100">
-          <pattern
-            id="hexagons"
-            x="0"
-            y="0"
-            width="20"
-            height="20"
-            patternUnits="userSpaceOnUse"
-          >
-            <path
-              d="M10 0 L15 5 L15 15 L10 20 L5 15 L5 5 Z"
-              fill="none"
-              stroke="#FFB94F"
-              strokeWidth="0.5"
-            />
+          <pattern id="hexagons" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M10 0 L15 5 L15 15 L10 20 L5 15 L5 5 Z" fill="none" stroke="#FFB94F" strokeWidth="0.5"/>
           </pattern>
           <rect width="100" height="100" fill="url(#hexagons)" />
         </svg>
@@ -122,23 +46,17 @@ function AdminHeader() {
   );
 }
 
-
-function SummaryCards({ reservationsCount }) {
+function SummaryCards({ reservationsCount, roomsCount }) {
   const [hoverCard, setHoverCard] = useState(null);
 
   const stats = [
     {
       id: "reservations",
-      label: "Reservas",
+      label: "Reservas Ativas",
       value: reservationsCount,
       color: "#ff8a4fff",
       icon: (
-        <svg
-          className="h-7 w-7 text-white"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-        >
+        <svg className="h-7 w-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <rect x="3" y="4" width="18" height="18" rx="2" strokeWidth={2} />
           <path d="M16 2v4M8 2v4M3 10h18" strokeWidth={2} />
           <circle cx="12" cy="15" r="2" fill="white" />
@@ -147,35 +65,25 @@ function SummaryCards({ reservationsCount }) {
     },
     {
       id: "rooms",
-      label: "Salas Livres",
-      value: 3,
+      label: "Salas Cadastradas",
+      value: roomsCount,
       color: "#48C957",
       icon: (
-        <svg
-          className="h-7 w-7 text-white"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-        >
-          <path d="M9 11l3 3L22 4" strokeWidth={2.5} strokeLinecap="round" />
-          <circle cx="12" cy="15" r="8" strokeWidth={2} />
+        <svg className="h-7 w-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="3" y="3" width="18" height="18" rx="2" strokeWidth={2} />
+          <path d="M9 3v18M15 3v18M3 9h18M3 15h18" strokeWidth={2} />
         </svg>
       ),
     },
     {
-      id: "resources",
-      label: "Recursos Disponíveis",
-      value: 12,
+      id: "system",
+      label: "Sistema",
+      value: "Ativo",
       color: "#47c9e0ff",
       icon: (
-        <svg
-          className="h-7 w-7 text-white"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-        >
-          <rect x="2" y="4" width="20" height="14" rx="2" strokeWidth={2} />
-          <path d="M8 20h8" strokeWidth={2} strokeLinecap="round" />
+        <svg className="h-7 w-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 11l3 3L22 4" strokeWidth={2.5} strokeLinecap="round" />
+          <circle cx="12" cy="15" r="8" strokeWidth={2} />
         </svg>
       ),
     },
@@ -190,37 +98,21 @@ function SummaryCards({ reservationsCount }) {
           onMouseLeave={() => setHoverCard(null)}
           className="relative group flex justify-center"
         >
-          {/* Hexágono individual (favo de mel) */}
           <div
             className="relative w-48 h-52 hover:scale-105 transition-all duration-300"
             style={{
-              filter:
-                hoverCard === stat.id
-                  ? "drop-shadow(0 20px 25px rgba(0,0,0,0.15))"
-                  : "drop-shadow(0 4px 6px rgba(0,0,0,0.1))",
+              filter: hoverCard === stat.id
+                ? "drop-shadow(0 20px 25px rgba(0,0,0,0.15))"
+                : "drop-shadow(0 4px 6px rgba(0,0,0,0.1))",
             }}
           >
-            {/* Forma hexagonal */}
             <svg viewBox="0 0 100 100" className="w-full h-full absolute">
               <defs>
-                <linearGradient
-                  id={`grad-${stat.id}`}
-                  x1="0%"
-                  y1="0%"
-                  x2="0%"
-                  y2="100%"
-                >
-                  <stop
-                    offset="0%"
-                    style={{ stopColor: "#FFE89F", stopOpacity: 1 }}
-                  />
-                  <stop
-                    offset="100%"
-                    style={{ stopColor: "#FFD966", stopOpacity: 1 }}
-                  />
+                <linearGradient id={`grad-${stat.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: "#FFE89F", stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: "#FFD966", stopOpacity: 1 }} />
                 </linearGradient>
               </defs>
-              {/* Hexágono */}
               <polygon
                 points="50,5 93,27.5 93,72.5 50,95 7,72.5 7,27.5"
                 fill={`url(#grad-${stat.id})`}
@@ -229,38 +121,26 @@ function SummaryCards({ reservationsCount }) {
               />
             </svg>
 
-            {/* Conteúdo do hexágono */}
             <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-6">
               <div
                 className="p-3 rounded-xl shadow-lg transform transition-all duration-300 mb-3"
                 style={{
                   backgroundColor: stat.color,
-                  transform:
-                    hoverCard === stat.id
-                      ? "rotate(12deg) scale(1.15)"
-                      : "rotate(0deg) scale(1)",
+                  transform: hoverCard === stat.id ? "rotate(12deg) scale(1.15)" : "rotate(0deg) scale(1)",
                 }}
               >
                 {stat.icon}
               </div>
               <div className="text-center">
-                <p className="text-xs text-[#8B4513] font-bold mb-1">
-                  {stat.label}
-                </p>
-                <p className="text-4xl font-bold text-[#0C0C0C]">
-                  {stat.value}
-                </p>
+                <p className="text-xs text-[#8B4513] font-bold mb-1">{stat.label}</p>
+                <p className="text-4xl font-bold text-[#0C0C0C]">{stat.value}</p>
               </div>
             </div>
 
-            {/* Brilho no hover */}
             {hoverCard === stat.id && (
               <div className="absolute inset-0 pointer-events-none">
                 <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <polygon
-                    points="50,5 93,27.5 93,72.5 50,95 7,72.5 7,27.5"
-                    fill="rgba(255, 255, 255, 0.2)"
-                  />
+                  <polygon points="50,5 93,27.5 93,72.5 50,95 7,72.5 7,27.5" fill="rgba(255, 255, 255, 0.2)"/>
                 </svg>
               </div>
             )}
@@ -295,7 +175,6 @@ function BookingSection() {
     fetchData();
   }, []);
 
-  // Ícones para os recursos selecionados
   const resourceIcons = {
     Projetor: "📽️",
     Whiteboard: "📋",
@@ -341,7 +220,6 @@ function BookingSection() {
       ) : (
         <div className="space-y-4">
           {bookings.map((booking) => {
-            // Find room name by ID
             const roomObj = rooms.find(r => r._id === booking.room);
             const roomName = roomObj ? roomObj.name : booking.room;
             
@@ -350,20 +228,17 @@ function BookingSection() {
                 key={booking._id}
                 className="group relative bg-gradient-to-r from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl border-2 border-[#FFB94F] hover:border-[#48C957] transition-all duration-300 transform hover:scale-[1.02]"
               >
-                {/* Abelha decorativa no hover */}
                 <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-2xl animate-bounce">🐝</span>
                 </div>
 
                 <div className="flex justify-between items-start">
                   <div className="flex items-start space-x-4 flex-1">
-                    {/* Avatar */}
                     <div className="text-4xl bg-[#48C957] rounded-full w-14 h-14 flex items-center justify-center shadow-md">
                       {booking.userName ? booking.userName[0].toUpperCase() : "👤"}
                     </div>
 
                     <div className="flex-1">
-                      {/* Nome e Sala */}
                       <div className="flex items-center gap-3 mb-2">
                         <p className="font-bold text-lg text-[#0C0C0C]">
                           {booking.userName || "Usuário"}
@@ -373,7 +248,6 @@ function BookingSection() {
                         </span>
                       </div>
 
-                      {/* Data e Horário */}
                       <div className="flex items-center gap-4 text-sm text-gray-700 mb-2">
                         <div className="flex items-center gap-2">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -386,16 +260,14 @@ function BookingSection() {
                         </div>
                         <div className="flex items-center gap-2">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10" strokeWidth={2} />
-                            <path d="M12 6v6l4 2" strokeWidth={2} strokeLinecap="round" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                           </svg>
-                          <span className="font-medium">
-                            {booking.startTime} – {booking.endTime}
+                          <span className="font-medium bg-[#FFE0A3] px-2 py-1 rounded">
+                            🕐 Dia Completo
                           </span>
                         </div>
                       </div>
 
-                      {/* Número de Pessoas */}
                       {booking.numberOfPeople && (
                         <div className="flex items-center gap-2 text-sm text-gray-700 mb-2">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -405,7 +277,6 @@ function BookingSection() {
                         </div>
                       )}
 
-                      {/* Recursos Selecionados */}
                       {booking.selectedResources && booking.selectedResources.length > 0 && (
                         <div className="mt-3">
                           <p className="text-xs text-gray-600 mb-2 font-semibold">Recursos solicitados:</p>
@@ -423,7 +294,6 @@ function BookingSection() {
                         </div>
                       )}
 
-                      {/* Finalidade */}
                       {booking.purpose && (
                         <div className="mt-3 text-sm text-gray-600">
                           <span className="font-semibold">Finalidade:</span> {booking.purpose}
@@ -451,44 +321,223 @@ function BookingSection() {
   );
 }
 
-function ResourceSection() {
+function CalendarSection() {
+  const [bookings, setBookings] = useState([]);
   const [rooms, setRooms] = useState([]);
+  const [selectedRoom, setSelectedRoom] = useState('all');
+  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchRooms() {
+    async function fetchData() {
       try {
-        const allRooms = await getRooms();
+        const [allBookings, allRooms] = await Promise.all([
+          getAllBookings(),
+          getRooms()
+        ]);
+        setBookings(allBookings);
         setRooms(allRooms);
       } catch (err) {
-        console.error("Erro ao carregar salas:", err);
-        setRooms([]);
+        console.error("Erro ao carregar dados:", err);
       } finally {
         setLoading(false);
       }
     }
-    fetchRooms();
+    fetchData();
   }, []);
 
-  const toggleStatus = async (id) => {
-    // Aqui você pode adicionar lógica para atualizar o status no backend
-    setRooms(
-      rooms.map((room) =>
-        room._id === id ? { ...room, isActive: !room.isActive } : room
-      )
-    );
+  const getDaysInMonth = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay();
+
+    return { daysInMonth, startingDayOfWeek, year, month };
+  };
+
+  const isDateBooked = (day) => {
+    const checkDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    checkDate.setHours(0, 0, 0, 0);
+
+    return bookings.some(booking => {
+      const bookingDate = new Date(booking.date);
+      bookingDate.setHours(0, 0, 0, 0);
+      
+      const roomMatch = selectedRoom === 'all' || booking.room === selectedRoom;
+      const dateMatch = bookingDate.getTime() === checkDate.getTime();
+      
+      return roomMatch && dateMatch;
+    });
+  };
+
+  const { daysInMonth, startingDayOfWeek } = getDaysInMonth(currentMonth);
+
+  const prevMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
+  };
+
+  const monthNames = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg border-2 border-[#FFB94F] p-6 hover:shadow-2xl transition-shadow duration-300">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-[#0C0C0C] flex items-center">
+          <span className="mr-3 text-3xl">📅</span>
+          Calendário de Reservas
+        </h2>
+
+        <div className="flex items-center gap-3">
+          <select
+            value={selectedRoom}
+            onChange={(e) => setSelectedRoom(e.target.value)}
+            className="px-4 py-2 border-2 border-[#FFB94F] rounded-full text-sm font-medium text-[#0C0C0C] focus:ring-2 focus:ring-[#48C957] focus:border-transparent outline-none"
+          >
+            <option value="all">Todas as Salas</option>
+            {rooms.map(room => (
+              <option key={room._id} value={room._id}>{room.name}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-[#FFB94F] mx-auto"></div>
+        </div>
+      ) : (
+        <div>
+          {/* Controles do mês */}
+          <div className="flex items-center justify-between mb-6">
+            <button
+              onClick={prevMonth}
+              className="p-2 hover:bg-[#FFF8E7] rounded-full transition"
+            >
+              <svg className="w-6 h-6 text-[#0C0C0C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <h3 className="text-xl font-bold text-[#0C0C0C]">
+              {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+            </h3>
+            
+            <button
+              onClick={nextMonth}
+              className="p-2 hover:bg-[#FFF8E7] rounded-full transition"
+            >
+              <svg className="w-6 h-6 text-[#0C0C0C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Dias da semana */}
+          <div className="grid grid-cols-7 gap-2 mb-2">
+            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
+              <div key={day} className="text-center text-sm font-bold text-[#8B4513] py-2">
+                {day}
+              </div>
+            ))}
+          </div>
+
+          {/* Dias do mês */}
+          <div className="grid grid-cols-7 gap-2">
+            {[...Array(startingDayOfWeek)].map((_, i) => (
+              <div key={`empty-${i}`} className="aspect-square"></div>
+            ))}
+            
+            {[...Array(daysInMonth)].map((_, i) => {
+              const day = i + 1;
+              const isBooked = isDateBooked(day);
+              const isToday = new Date().getDate() === day && 
+                              new Date().getMonth() === currentMonth.getMonth() &&
+                              new Date().getFullYear() === currentMonth.getFullYear();
+
+              return (
+                <div
+                  key={day}
+                  className={`aspect-square flex items-center justify-center rounded-lg text-sm font-semibold transition-all cursor-pointer
+                    ${isToday ? 'ring-2 ring-[#48C957]' : ''}
+                    ${isBooked 
+                      ? 'bg-[#FFB94F] text-[#0C0C0C] hover:bg-[#e5a740]' 
+                      : 'bg-[#F8F4E3] text-gray-700 hover:bg-[#FFE0A3]'
+                    }`}
+                >
+                  {day}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Legenda */}
+          <div className="flex items-center justify-center gap-6 mt-6 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded bg-[#FFB94F]"></div>
+              <span className="text-gray-700">Ocupado</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded bg-[#F8F4E3]"></div>
+              <span className="text-gray-700">Livre</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded border-2 border-[#48C957]"></div>
+              <span className="text-gray-700">Hoje</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RoomStatusSection() {
+  const [rooms, setRooms] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [allRooms, allBookings] = await Promise.all([
+          getRooms(),
+          getAllBookings()
+        ]);
+        setRooms(allRooms);
+        setBookings(allBookings);
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const isRoomOccupiedToday = (roomId) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    return bookings.some(booking => {
+      const bookingDate = new Date(booking.date);
+      bookingDate.setHours(0, 0, 0, 0);
+      return booking.room === roomId && bookingDate.getTime() === today.getTime();
+    });
   };
 
   const resourceIcons = {
     Projetor: "📽️",
     "Quadro Branco": "📋",
     Whiteboard: "📋",
-    Chave: "🔑",
-    TV: "📺",
     WiFi: "📡",
-    "Wi-Fi Premium": "📡",
-    "Adaptador HDMI": "🔌",
-    "Controle Ar": "🌬️",
     Videoconferência: "💻",
     "Sistema de Som": "🔊",
     Café: "☕",
@@ -499,7 +548,6 @@ function ResourceSection() {
     "Mesas Modulares": "🪑",
   };
 
-  // Ícones para salas baseados na localização ou tipo
   const getRoomIcon = (room) => {
     if (room.location?.toLowerCase().includes("auditório") || 
         room.name?.toLowerCase().includes("auditório")) return "🎭";
@@ -511,153 +559,89 @@ function ResourceSection() {
     return "🏢";
   };
 
-  if (loading) {
-    return (
-      <div className="bg-white rounded-2xl shadow-lg border-2 border-[#FFB94F] p-6">
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#FFB94F] mx-auto mb-4"></div>
-          <p className="text-[#8B4513] font-medium">Carregando salas...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="bg-white rounded-2xl shadow-lg border-2 border-[#FFB94F] p-6 hover:shadow-2xl transition-shadow duration-300">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-[#0C0C0C] flex items-center">
-          <span className="mr-3 text-3xl">🧑‍💻</span>
-          Gerenciar Recursos
+          <span className="mr-3 text-3xl">🏢</span>
+          Estado das Salas
         </h2>
-
-        <button 
-          onClick={() => window.location.href = '/createroom'}
-          className="px-4 py-2 bg-gradient-to-r from-[#48C957] to-[#3ab049] text-white rounded-full font-bold text-sm shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300"
-        >
-          + Nova Sala
-        </button>
       </div>
 
-      {rooms.length === 0 ? (
-        <div className="text-center py-12">
+      {loading ? (
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-[#FFB94F] mx-auto"></div>
+        </div>
+      ) : rooms.length === 0 ? (
+        <div className="text-center py-8">
           <div className="text-6xl mb-4">📭</div>
           <p className="text-gray-500">Nenhuma sala cadastrada</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {rooms.map((room) => (
-            <div
-              key={room._id}
-              className="group bg-gradient-to-br from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl border-2 border-[#FFB94F] hover:border-[#48C957] transition-all duration-300 transform hover:scale-105 hover:shadow-lg relative overflow-hidden"
-            >
-              {/* Padrão hexagonal decorativo */}
-              <div className="absolute -right-4 -top-4 opacity-5 transform rotate-12">
-                <svg className="w-24 h-24" viewBox="0 0 24 24">
-                  <path d="M12 2L15 5 L15 9 L12 12 L9 9 L9 5 Z" fill="#FFB94F" />
-                </svg>
-              </div>
+          {rooms.map((room) => {
+            const isOccupied = isRoomOccupiedToday(room._id);
+            
+            return (
+              <div
+                key={room._id}
+                className="group bg-gradient-to-br from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl border-2 border-[#FFB94F] hover:border-[#48C957] transition-all duration-300 transform hover:scale-105 hover:shadow-lg relative overflow-hidden"
+              >
+                <div className="absolute -right-4 -top-4 opacity-5 transform rotate-12">
+                  <svg className="w-24 h-24" viewBox="0 0 24 24">
+                    <path d="M12 2L15 5 L15 9 L12 12 L9 9 L9 5 Z" fill="#FFB94F" />
+                  </svg>
+                </div>
 
-              <div className="relative z-10">
-                {/* Cabeçalho da sala */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-3xl">{getRoomIcon(room)}</span>
-                    <div>
-                      <p className="font-bold text-lg text-[#0C0C0C]">
-                        {room.name}
-                      </p>
-                      <span
-                        className={`inline-block px-3 py-1 rounded-full text-xs font-bold mt-1 ${
-                          room.isActive
-                            ? "bg-[#48C957] text-white"
-                            : "bg-[#FFB94F] text-[#0C0C0C]"
-                        }`}
-                      >
-                        {room.isActive ? "✓ Ativa" : "● Inativa"}
-                      </span>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-3xl">{getRoomIcon(room)}</span>
+                      <div>
+                        <p className="font-bold text-lg text-[#0C0C0C]">
+                          {room.name}
+                        </p>
+                        <span
+                          className={`inline-block px-3 py-1 rounded-full text-xs font-bold mt-1 ${
+                            isOccupied
+                              ? "bg-[#FFB94F] text-[#0C0C0C]"
+                              : "bg-[#48C957] text-white"
+                          }`}
+                        >
+                          {isOccupied ? "● Ocupada Hoje" : "✓ Livre Hoje"}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Informações da sala */}
-                <div className="mb-4 space-y-2">
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold">Capacidade:</span> {room.capacity} pessoas
-                  </p>
-                  {room.location && (
+                  <div className="mb-4 space-y-2">
                     <p className="text-sm text-gray-600">
-                      <span className="font-semibold">Local:</span> {room.location}
+                      <span className="font-semibold">Capacidade:</span> {room.capacity} pessoas
                     </p>
+                    {room.location && (
+                      <p className="text-sm text-gray-600">
+                        <span className="font-semibold">Local:</span> {room.location}
+                      </p>
+                    )}
+                  </div>
+
+                  {room.resources && room.resources.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {room.resources.map((res, i) => (
+                        <span
+                          key={i}
+                          className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1.5 rounded-full text-[#0C0C0C] font-medium shadow-sm flex items-center gap-1"
+                        >
+                          <span>{resourceIcons[res] || "📦"}</span>
+                          {res}
+                        </span>
+                      ))}
+                    </div>
                   )}
                 </div>
-
-                {/* Lista de recursos */}
-                {room.resources && room.resources.length > 0 ? (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {room.resources.map((res, i) => (
-                      <span
-                        key={i}
-                        className="text-xs bg-white border-2 border-[#FFB94F] px-3 py-1.5 rounded-full text-[#0C0C0C] font-medium shadow-sm flex items-center gap-1"
-                      >
-                        <span>{resourceIcons[res] || "📦"}</span>
-                        {res}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-xs text-gray-400 mb-4 italic">
-                    Nenhum recurso cadastrado
-                  </p>
-                )}
-
-                {/* Botão de ação */}
-                <button
-                  onClick={() => toggleStatus(room._id)}
-                  className={`w-full py-2.5 rounded-xl font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${
-                    room.isActive
-                      ? "bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] hover:from-[#e5a740] hover:to-[#FFB94F]"
-                      : "bg-gradient-to-r from-[#48C957] to-[#3ab049] text-white hover:from-[#3ab049] hover:to-[#48C957]"
-                  }`}
-                >
-                  {room.isActive ? (
-                    <>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
-                      Desativar Sala
-                    </>
-                  ) : (
-                    <>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-                        />
-                      </svg>
-                      Ativar Sala
-                    </>
-                  )}
-                </button>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
@@ -668,53 +652,50 @@ function ResourceSection() {
 // PÁGINA PRINCIPAL
 // ======================
 
-
 export default function AdminPage() {
   const [bookings, setBookings] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchBookings() {
+    async function fetchData() {
       try {
-        const allBookings = await getAllBookings();
+        const [allBookings, allRooms] = await Promise.all([
+          getAllBookings(),
+          getRooms()
+        ]);
         setBookings(allBookings);
+        setRooms(allRooms);
       } catch (err) {
         setBookings([]);
+        setRooms([]);
       } finally {
         setLoading(false);
       }
     }
-    fetchBookings();
+    fetchData();
   }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F8F4E3] via-[#FFF8E7] to-[#F8F4E3] py-10 px-4 relative overflow-hidden">
       {/* Abelhas animadas de fundo */}
-      <div
-        className="absolute top-20 left-10 animate-bounce"
-        style={{ animationDelay: "0s", animationDuration: "3s" }}
-      >
+      <div className="absolute top-20 left-10 animate-bounce" style={{ animationDelay: "0s", animationDuration: "3s" }}>
         <span className="text-4xl opacity-20">🐝</span>
       </div>
-      <div
-        className="absolute top-40 right-20 animate-bounce"
-        style={{ animationDelay: "1s", animationDuration: "4s" }}
-      >
+      <div className="absolute top-40 right-20 animate-bounce" style={{ animationDelay: "1s", animationDuration: "4s" }}>
         <span className="text-3xl opacity-20">🐝</span>
       </div>
-      <div
-        className="absolute bottom-40 left-1/4 animate-bounce"
-        style={{ animationDelay: "2s", animationDuration: "5s" }}
-      >
+      <div className="absolute bottom-40 left-1/4 animate-bounce" style={{ animationDelay: "2s", animationDuration: "5s" }}>
         <span className="text-3xl opacity-20">🐝</span>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <AdminHeader />
-        <SummaryCards reservationsCount={bookings.length} />
+        <SummaryCards reservationsCount={bookings.length} roomsCount={rooms.length} />
         <div className="space-y-8">
           <BookingSection />
-          <ResourceSection />
+          <CalendarSection />
+          <RoomStatusSection />
         </div>
       </div>
 
