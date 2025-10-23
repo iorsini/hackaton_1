@@ -22,8 +22,6 @@ const ReservationSchema = new mongoose.Schema(
       type: Date,
       required: [true, 'Data é obrigatória'],
     },
-    // REMOVIDO: startTime e endTime (já que é reserva de dia completo)
-    // ADICIONADO: numberOfPeople
     numberOfPeople: {
       type: Number,
       required: [true, 'Número de pessoas é obrigatório'],
@@ -38,7 +36,6 @@ const ReservationSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    // ADICIONADO: status para controlar reservas ativas/canceladas
     status: {
       type: String,
       enum: ['active', 'cancelled'],

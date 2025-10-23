@@ -13,7 +13,7 @@ app.use(express.json());
 
 const mongoose = require("mongoose");
 
-// 🔥 MODELO DE SALA
+// ===== MODELO DE SALA =====
 const RoomSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -27,12 +27,12 @@ const RoomSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// 🔥 MODELO DE RESERVA
+// ===== MODELO DE RESERVA =====
 const ReservationSchema = new mongoose.Schema(
   {
     room: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Room", // ← Nome correto
+      ref: "Room",
       required: true,
     },
     userName: { type: String, required: true, trim: true },
@@ -46,7 +46,7 @@ const ReservationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// 🔥 REGISTRAR MODELOS (IMPORTANTE: nome 'Room' em ambos)
+// ===== REGISTRAR MODELOS =====
 const Room = mongoose.models.Room || mongoose.model("Room", RoomSchema);
 const Reservation =
   mongoose.models.Reservation ||
@@ -162,7 +162,7 @@ app.post("/api/salas/:id/booking", async (req, res) => {
     if (existingBooking) {
       return res.status(409).json({
         success: false,
-        error: `Sala já reservada para ${selectedDate.toLocaleDateString(
+        error: `Esta sala já está reservada para ${selectedDate.toLocaleDateString(
           "pt-PT"
         )}`,
       });
@@ -243,23 +243,6 @@ app.delete("/api/bookings/:id", async (req, res) => {
   } catch (error) {
     console.error("❌ Erro ao deletar reserva:", error);
     res.status(500).json({ erro: "Erro interno", detalhes: error.message });
-  }
-});
-
-// 🧹 Limpar reservas órfãs (sem sala)
-app.delete("/api/bookings/cleanup", async (req, res) => {
-  try {
-    const result = await Reservation.deleteMany({
-      $or: [{ room: null }, { room: { $exists: false } }],
-    });
-    console.log(`🧹 Removidas ${result.deletedCount} reservas órfãs`);
-    res.json({
-      message: "Reservas órfãs removidas com sucesso!",
-      count: result.deletedCount,
-    });
-  } catch (error) {
-    console.error("Erro ao limpar:", error);
-    res.status(500).json({ erro: error.message });
   }
 });
 
