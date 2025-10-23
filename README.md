@@ -1,438 +1,398 @@
-# 🎬 MOVIELIST
+# 🐝 HONEYCOMB
 
 <div align="center">
-
-![MovieList](https://img.shields.io/badge/MOVIELIST-Your_Personal_Cinema-e50914?style=for-the-badge&logo=film&logoColor=white)
-
-**A sleek, modern movie tracking app with multi-user authentication**
-
-[![Next.js](https://img.shields.io/badge/Next.js-13+-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
-[![NextAuth](https://img.shields.io/badge/NextAuth.js-Authentication-purple?style=flat-square&logo=auth0&logoColor=white)](https://next-auth.js.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14+-black?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Express](https://img.shields.io/badge/Express-5.1+-green?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![React](https://img.shields.io/badge/React-18+-61DAFB?style=flat-square&logo=react&logoColor=black)](https://reactjs.org/)
-
-[Live Demo](https://movie-watchlist-app-cu4r.vercel.app/)
+[![Tailwind](https://img.shields.io/badge/Tailwind-3.4+-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+</div>
 
 ---
 
-</div>
+## 🎯 Sobre o Projeto
 
-## 📖 About
+**Honeycomb** é um sistema completo de gestão de reservas para espaços comunitários, coworkings e salas de reunião. Inspirado na organização perfeita de uma colmeia, oferece uma experiência visual única com design hexagonal temático! 🐝
 
-**MovieList** is a beautiful, Netflix-inspired movie tracking application that lets you organize your personal cinema collection. Track what you've watched, create your watchlist, rate movies, and discover your top-rated films - all with a stunning dark UI that feels like home.
+### 🌟 Diferenciais
 
-Perfect for movie enthusiasts who want a clean, personal space to curate their film journey.
+- 🎨 **Design Único** - Interface inspirada em favos de mel
+- 🌊 **Animações Suaves** - Abelhas flutuantes e transições elegantes  
+- 📱 **100% Responsivo** - Funciona perfeitamente em qualquer dispositivo
+- ⚡ **Performance Otimizada** - Next.js + Express para máxima velocidade
+- 🔒 **Validações Inteligentes** - Previne conflitos de reservas automaticamente
+- 🎯 **UX Intuitiva** - Processo de reserva em poucos cliques
+
+---
 
 ## ✨ Features
 
-<table>
-<tr>
-<td width="50%">
+### 👥 Para Usuários
 
-### 🎭 Core Features
-- ✅ **Personal Movie Library** - Add, edit, and delete movies with ease
-- 📊 **Watch Status Tracking** - Mark movies as watched or add them to your watchlist
-- ⭐ **Star Rating System** - Rate your movies from 1-10 stars
-- 🔍 **Smart Filtering** - View all movies, watched only, unwatched, or top-rated
-- 🔐 **User Authentication** - Secure login/register system with encrypted passwords
-- 🌍 **Multi-language Support** - Full support for English and Portuguese 🇬🇧🇵🇹
+#### 🏢 Gestão de Salas
+- 🔍 Busca inteligente por nome/descrição
+- 📊 Visualização detalhada de capacidade
+- 🎨 Cards animados
+- 📦 Lista completa de recursos disponíveis
 
-</td>
-<td width="50%">
+#### 📅 Sistema de Reservas
+- 📆 Reserva de dia completo
+- 👥 Definição de capacidade das salas
+- 🎯 Seleção de recursos necessários
+- ✉️ Confirmação visual instantânea
 
-### 🎨 UI/UX Highlights
-- 🎬 **Netflix-inspired Design** - Sleek dark theme with smooth animations
-- 📱 **Fully Responsive** - Perfect on desktop, tablet, and mobile
-- 🧭 **Intuitive Navigation** - Tab-based interface for quick access
-- ➕ **Floating Action Button** - Quick movie addition from anywhere
-- ⚡ **Real-time Updates** - Instant feedback on all actions
-- ⚙️ **Settings Panel** - Customize language and manage account
+#### 🎨 Interface
+- 🍯 Tema mel e colmeia
+- 🐝 Abelhas animadas no background
+- 💫 Stats em hexágonos 3D
+- 🌈 Gradientes dourados personalizados
 
-</td>
-</tr>
-</table>
+#### ✅ Validações
+- ⚠️ Alerta de capacidade excedida
+- 🚫 Bloqueio de datas já reservadas
+- ✓ Verificação de dados em tempo real
+- 📧 Validação de email
 
-## 🚀 Quick Start
+### 🔧 Para Administradores
 
-### Prerequisites
+#### 📊 Dashboard Completo
+- 📈 Estatísticas em hexágonos 3D
+- 📋 Lista de todas as reservas ativas
+- 🏢 Status em tempo real de cada sala
+- 📅 Calendário visual interativo
+
+#### 🛠️ Controle Total
+- ❌ Cancelamento de reservas
+- 📦 Visualização de recursos solicitados
+- 👥 Detalhes de cada reserva
+- 🗓️ Navegação por mês no calendário
+
+---
+
+## 📦 Instalação
+
+### 📋 Pré-requisitos
 
 ```bash
-Node.js 16+
-MongoDB (local or Atlas)
-npm or yarn
+Node.js 18+
+MongoDB Atlas (ou local)
+npm ou yarn
+Git
 ```
 
-### Installation
+### 🛠️ Passo a Passo
 
-**1. Clone the repository**
+**1️⃣ Clone o repositório**
 ```bash
-git clone https://github.com/yourusername/movielist.git
-cd movielist
+git clone https://github.com/seu-usuario/honeycomb.git
+cd honeycomb
 ```
 
-**2. Install dependencies**
+**2️⃣ Instale as dependências**
 ```bash
 npm install
 ```
 
-**3. Set up environment variables**
+**3️⃣ Configure as variáveis de ambiente**
 
-Create a `.env.local` file in the root directory:
+Crie um arquivo `.env` na raiz do projeto:
 
 ```env
-# MongoDB Connection
-MONGODB_URI=mongodb://localhost:27017/movielist
-# or MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/movielist
-
-# NextAuth Configuration
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-super-secret-key-here-generate-with-openssl
+MONGODB_URI=mongodb+srv://usuario:senha@cluster.mongodb.net/honeycomb?retryWrites=true&w=majority
+NODE_ENV=development
+PORT=3000
 ```
 
-> 💡 **Generate a secure NEXTAUTH_SECRET:**
-> ```bash
-> openssl rand -base64 32
-> ```
+**4️⃣ (Opcional) Popule o banco com dados de exemplo**
+```bash
+npm run seed
+```
 
-**4. Run the development server**
+**5️⃣ Inicie o servidor de desenvolvimento**
 ```bash
 npm run dev
 ```
 
-**5. Open your browser**
+**6️⃣ Abra no navegador**
 ```
 http://localhost:3000
 ```
 
-### Production Build
+🎉 **Pronto!** O Honeycomb está funcionando!
 
-```bash
-npm run build
-npm start
-```
+---
 
-## 🛠️ Tech Stack
-
-<table>
-<tr>
-<td align="center" width="33%">
-
-### Frontend
-![Next.js](https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-
-</td>
-<td align="center" width="33%">
-
-### Backend
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white)
-
-</td>
-<td align="center" width="33%">
-
-### Security
-![NextAuth](https://img.shields.io/badge/NextAuth-000000?style=for-the-badge&logo=auth0&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
-![bcrypt](https://img.shields.io/badge/bcrypt-338033?style=for-the-badge)
-
-</td>
-</tr>
-</table>
-
-## 📁 Project Structure
+## 🏗️ Estrutura do Projeto
 
 ```
-movielist/
-├── 📂 lib/
-│   └── mongodb.js              # MongoDB connection with caching
-├── 📂 models/
-│   ├── Movie.js                # Movie schema
-│   └── User.js                 # User schema
-├── 📂 src/
-│   ├── 📂 components/
-│   │   ├── AddMovie.jsx        # Add movie form
-│   │   ├── AllMovies.jsx       # All movies grid
-│   │   ├── EditMovie.jsx       # Edit movie form
-│   │   ├── WatchedMovies.jsx   # Watched movies view
-│   │   ├── NotWatchedMovies.jsx # Watchlist view
-│   │   ├── MoviesByRating.jsx  # Top rated ranking
-│   │   └── StarRating.jsx      # Rating component
-│   ├── 📂 pages/
-│   │   ├── 📂 api/
-│   │   │   ├── 📂 auth/
-│   │   │   │   ├── [...nextauth].js  # NextAuth config
-│   │   │   │   ├── register.js       # User registration
-│   │   │   │   └── delete-account.js # Account deletion
-│   │   │   └── 📂 movies/
-│   │   │       ├── index.js          # GET/POST movies
-│   │   │       └── [id].js           # PUT/DELETE movie
-│   │   ├── index.jsx           # Main dashboard
-│   │   ├── login.jsx           # Login page
-│   │   └── register.jsx        # Registration page
-│   ├── 📂 services/
-│   │   └── api.js              # API client functions
-│   └── 📂 utils/
-│       └── translations.js     # i18n translations
-└── 📄 package.json
+honeycomb/
+├── public/
+│   └── images/
+│       ├── logoHoneycomb.svg
+│       └── rooms/
+├── src/
+│   ├── app/
+│   │   ├── page.js              # Página principal (usuário)
+│   │   ├── admin/
+│   │   │   └── page.jsx         # Dashboard admin
+│   │   ├── globals.css          # Estilos globais + tema mel
+│   │   └── layout.js            # Layout base
+│   ├── components/
+│   │   ├── Navbar.js            # Barra de navegação
+│   │   ├── RoomCard.js          # Card de sala
+│   │   └── ReservationModal.js  # Modal de reserva
+│   ├── models/
+│   │   ├── Room.js              # Schema de salas
+│   │   └── Reservation.js       # Schema de reservas
+│   ├── services/
+│   │   └── api.js               # Cliente HTTP
+│   └── lib/
+│       ├── db.js                # Conexão MongoDB
+│       └── mail.js              # Sistema de emails
+├── server.js                    # Servidor Express + Next.js
+├── package.json
+├── tailwind.config.js
+└── .env
 ```
 
-## 🔌 API Routes
+---
 
-### 🔐 Authentication
+## 🔧 API Endpoints
 
-<table>
-<tr>
-<th>Endpoint</th>
-<th>Method</th>
-<th>Description</th>
-<th>Auth Required</th>
-</tr>
-<tr>
-<td><code>/api/auth/register</code></td>
-<td><code>POST</code></td>
-<td>Register a new user</td>
-<td>❌</td>
-</tr>
-<tr>
-<td><code>/api/auth/signin</code></td>
-<td><code>POST</code></td>
-<td>Login user (NextAuth)</td>
-<td>❌</td>
-</tr>
-<tr>
-<td><code>/api/auth/delete-account</code></td>
-<td><code>DELETE</code></td>
-<td>Delete user & all movies</td>
-<td>✅</td>
-</tr>
-</table>
+### 🏢 Salas
 
-#### Register User Example
-```json
-POST /api/auth/register
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| `GET` | `/api/salas` | Lista todas as salas | ❌ |
+| `GET` | `/api/salas/:id` | Detalhes de uma sala | ❌ |
+| `POST` | `/api/salas` | Criar nova sala | ✅ |
+| `GET` | `/api/salas/:id/bookings` | Reservas de uma sala | ❌ |
+| `GET` | `/api/salas/:id/available-dates` | Datas indisponíveis | ❌ |
 
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "securepass123"
-}
-```
+### 📅 Reservas
 
-### 🎬 Movies
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| `GET` | `/api/bookings` | Todas as reservas ativas | ✅ |
+| `POST` | `/api/salas/:id/booking` | Criar reserva | ❌ |
+| `DELETE` | `/api/bookings/:id` | Cancelar reserva | ✅ |
 
-<table>
-<tr>
-<th>Endpoint</th>
-<th>Method</th>
-<th>Description</th>
-<th>Auth Required</th>
-</tr>
-<tr>
-<td><code>/api/movies</code></td>
-<td><code>GET</code></td>
-<td>Get all user's movies</td>
-<td>✅</td>
-</tr>
-<tr>
-<td><code>/api/movies</code></td>
-<td><code>POST</code></td>
-<td>Create new movie</td>
-<td>✅</td>
-</tr>
-<tr>
-<td><code>/api/movies/[id]</code></td>
-<td><code>PUT</code></td>
-<td>Update movie</td>
-<td>✅</td>
-</tr>
-<tr>
-<td><code>/api/movies/[id]</code></td>
-<td><code>DELETE</code></td>
-<td>Delete movie</td>
-<td>✅</td>
-</tr>
-</table>
+### 📝 Exemplos de Uso
 
-#### Create Movie Example
-```json
-POST /api/movies
-
-{
-  "title": "Inception",
-  "year": 2010,
-  "genre": "Sci-Fi",
-  "watched": true,
-  "rating": 9
-}
-```
-
-## 🌍 Internationalization
-
-MovieList supports **2 languages**:
-
-| Language | Code | Status |
-|----------|------|--------|
-| 🇬🇧 English | `en` | ✅ Default |
-| 🇵🇹 Portuguese | `pt` | ✅ Complete |
-
-### Adding More Languages
-
-Edit `src/utils/translations.js`:
-
+**Buscar todas as salas**
 ```javascript
-export const translations = {
-  en: { /* English translations */ },
-  pt: { /* Portuguese translations */ },
-  es: { /* Add Spanish */ },
-  fr: { /* Add French */ }
-};
+GET /api/salas
+
+// Response (200 OK)
+[
+  {
+    "_id": "67890abc",
+    "name": "Auditório",
+    "description": "Grande espaço para eventos...",
+    "capacity": 50,
+    "resources": ["Projetor", "Sistema de Som", "Microfones"],
+    "image": "/images/rooms/auditorio.png",
+    "location": "Piso Térreo",
+    "isActive": true
+  }
+]
 ```
 
-## 🎨 Customization
+**Criar uma reserva**
+```javascript
+POST /api/salas/67890abc/booking
+Content-Type: application/json
 
-### Color Theme
+{
+  "userName": "João Silva",
+  "userEmail": "joao@email.com",
+  "date": "2025-10-25",
+  "numberOfPeople": 5,
+  "purpose": "Reunião de equipe",
+  "selectedResources": ["Projetor", "WiFi"]
+}
 
-The app uses Netflix-inspired colors. Main brand color: `#e50914`
+// Response (201 Created)
+{
+  "success": true,
+  "data": {
+    "_id": "12345xyz",
+    "room": { /* dados da sala */ },
+    "userName": "João Silva",
+    "userEmail": "joao@email.com",
+    "date": "2025-10-25T00:00:00.000Z",
+    "numberOfPeople": 5,
+    "purpose": "Reunião de equipe",
+    "selectedResources": ["Projetor", "WiFi"],
+    "status": "active"
+  }
+}
+```
 
-**To change colors**, edit the CSS in component files:
+---
+
+## 🗄️ Banco de Dados
+
+### 📊 Schemas MongoDB
+
+**Room (Sala)**
+```javascript
+{
+  name: String,              // Nome da sala
+  description: String,       // Descrição detalhada
+  capacity: Number,          // Número máximo de pessoas
+  resources: [String],       // ["Projetor", "WiFi", ...]
+  image: String,             // URL da imagem
+  location: String,          // Localização física
+  isActive: Boolean,         // Se está disponível
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+**Reservation (Reserva)**
+```javascript
+{
+  room: ObjectId,            // Referência à sala
+  userName: String,          // Nome do usuário
+  userEmail: String,         // Email do usuário
+  date: Date,                // Data da reserva (dia completo)
+  numberOfPeople: Number,    // Quantidade de pessoas
+  purpose: String,           // Finalidade da reserva
+  selectedResources: [String], // Recursos solicitados
+  status: String,            // "active" ou "cancelled"
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+---
+
+## 🎨 Customização
+
+### 🌈 Tema de Cores
+
+Edite `src/app/globals.css`:
 
 ```css
-/* Primary gradient */
-background: linear-gradient(135deg, #e50914 0%, #c20812 100%);
-
-/* Accent color */
-color: #e50914;
-border-color: #e50914;
-```
-
-### Database Schema
-
-**Movie Model:**
-```javascript
-{
-  title: String (required),
-  year: Number (required),
-  genre: String (required),
-  watched: Boolean (default: false),
-  rating: Number (1-10, optional),
-  userId: ObjectId (required),
-  createdAt: Date (auto)
+:root {
+  --honey-primary: #FFB947;   /* Dourado principal */
+  --honey-dark: #E69500;      /* Dourado escuro */
+  --honey-light: #FFEACC;     /* Mel claro */
+  --honey-cream: #FFF8E7;     /* Creme */
+  --honey-brown: #8B6914;     /* Marrom mel */
 }
 ```
 
-**User Model:**
+### 🐝 Abelhas Animadas
+
+Ajuste em `src/app/page.js`:
+
 ```javascript
-{
-  name: String (required),
-  email: String (required, unique),
-  password: String (hashed, required),
-  createdAt: Date (auto)
-}
+// Número de abelhas
+const bees = Array.from({ length: 15 }) // Altere para mais/menos
+
+// Velocidade
+animationDuration: `${(Math.random() * 4 + 4).toFixed(1)}s` // 4-8s
 ```
 
-## 🔧 Environment Variables
+---
 
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| `MONGODB_URI` | ✅ | MongoDB connection string | `mongodb://localhost:27017/movielist` |
-| `NEXTAUTH_URL` | ✅ | Application URL | `http://localhost:3000` |
-| `NEXTAUTH_SECRET` | ✅ | Secret for JWT signing | Generate with `openssl rand -base64 32` |
+## 📜 Scripts Disponíveis
 
-## 🔒 Security Features
-
-- 🔐 **Password Hashing** - bcrypt with salt rounds
-- 🎫 **JWT Sessions** - Secure token-based authentication
-- 👤 **User Isolation** - Each user only sees their own data
-- 🛡️ **Protected Routes** - All API endpoints require authentication
-- 🚫 **SQL Injection Prevention** - MongoDB NoSQL with Mongoose sanitization
-
-## 🤝 Contributing
-
-Contributions are **welcome**! Here's how:
-
-1. 🍴 Fork the repository
-2. 🌿 Create your feature branch
-   ```bash
-   git checkout -b feature/AmazingFeature
-   ```
-3. 💾 Commit your changes
-   ```bash
-   git commit -m 'Add some AmazingFeature'
-   ```
-4. 📤 Push to the branch
-   ```bash
-   git push origin feature/AmazingFeature
-   ```
-5. 🔀 Open a Pull Request
-
-### Contribution Ideas
-
-- 🎨 New themes (light mode, custom colors)
-- 🌐 Additional language translations
-- 📊 Statistics dashboard
-- 🔍 Movie search with external API (TMDB, OMDb)
-- 🖼️ Movie poster uploads
-- 📱 Mobile app version
-- 🎯 Movie recommendations algorithm
-
-## 📋 Roadmap
-
-- [ ] Movie poster integration (TMDB API)
-- [ ] Advanced search and filters
-- [ ] Export/Import movie lists
-- [ ] Social features (share lists)
-- [ ] Statistics dashboard
-- [ ] Mobile app (React Native)
-- [ ] Dark/Light theme toggle
-- [ ] Movie trailer embeds
-
-## 🐛 Known Issues
-
-None at the moment! 🎉
-
-Found a bug? [Open an issue](https://github.com/yourusername/movielist/issues)
-
-## 📝 License
-
-This project is open source and available under the **MIT License**.
-
-```
-MIT License
-
-Copyright (c) 2024 MovieList
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software...
+```bash
+npm run dev          # Desenvolvimento (Express + Next.js)
+npm run build        # Build de produção
+npm start            # Servidor de produção
+npm run seed         # Popular banco de dados
+npm run lint         # Verificar código
 ```
 
-## 🙏 Acknowledgments
+---
 
-- 🎬 Design inspired by **Netflix**
-- 🔐 Authentication powered by **NextAuth.js**
-- 🗄️ Database by **MongoDB**
-- ⚛️ Built with **React** and **Next.js**
-- 💚 Built with love for movie enthusiasts
+## 🛠️ Stack Tecnológica
 
-## 📧 Contact
+**Core**
+- [Next.js 14](https://nextjs.org/) - Framework React
+- [Express 5.1](https://expressjs.com/) - Servidor HTTP
+- [React 18](https://react.dev/) - Biblioteca UI
+- [MongoDB Atlas](https://www.mongodb.com/) - Banco NoSQL
 
-**Questions? Issues? Suggestions?**
+**UI/UX**
+- [Tailwind CSS 3.4](https://tailwindcss.com/) - Framework CSS
+- [Lucide React](https://lucide.dev/) - Ícones modernos
+- Custom CSS Animations - Animações personalizadas
 
-- **GitHub Issues** - [Report bugs or request features](https://github.com/iorsini/movie_watchlist_app/issues)
-- **LinkedIn** - [@isadora-barradas](https://www.linkedin.com/in/isadora-barradas/)
+**Dados**
+- [Mongoose 8.19](https://mongoosejs.com/) - ODM MongoDB
+- [CORS](https://github.com/expressjs/cors) - Controle de requisições
+
+---
+
+## 🚀 Deploy
+
+### 🌐 Vercel (Recomendado)
+
+1. Conecte seu repositório GitHub à Vercel
+2. Configure as variáveis de ambiente:
+```
+MONGODB_URI=sua-string-mongodb-atlas
+NODE_ENV=production
+```
+3. Deploy automático! 🎉
+
+### 🐳 Docker
+
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+```bash
+docker build -t honeycomb .
+docker run -p 3000:3000 --env-file .env honeycomb
+```
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! 🐝
+
+1. Fork o projeto
+2. Crie uma branch: `git checkout -b feature/MinhaFeature`
+3. Commit: `git commit -m 'Adiciona MinhaFeature'`
+4. Push: `git push origin feature/MinhaFeature`
+5. Abra um Pull Request
+
+**Ideias para contribuir:**
+- 🌍 Adicionar mais idiomas
+- 📊 Dashboard com gráficos
+- 🔔 Sistema de notificações
+- 📸 Upload de fotos
+- ⭐ Sistema de avaliações
+- 🗓️ Google Calendar
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença **MIT**.
 
 ---
 
 <div align="center">
 
-### ⭐ Star this repo if you like it! ⭐
+### ⭐ Se você gostou, deixe uma estrela! ⭐
 
-**Made with ❤️ and 🎬 by movie lovers, for movie lovers**
+**Feito com 🍯 e muito 💛 pela equipa Honeycomb**
+
+![Bee Animation](https://img.shields.io/badge/🐝-Buzzing-FFB94F?style=for-the-badge)
 
 </div>
