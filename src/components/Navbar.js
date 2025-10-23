@@ -19,7 +19,7 @@ export default function Navbar() {
                   <img
                     src="/images/logoHoneycomb.svg"
                     alt="Honeycomb logo"
-                    className="w-12 h-12 object-contain"
+                    className="w-20 h-20 object-contain"
                   />
                 </div>
               </div>
@@ -27,10 +27,10 @@ export default function Navbar() {
 
             {/* Título */}
             <div>
-              <span className="text-2xl font-bold text-[#4a3329] drop-shadow-lg">
+              <span className="text-3xl font-bold text-[#4a3329] drop-shadow-lg">
                 Honeycomb
               </span>
-              <p className="text-xs text-[#4a3329] font-medium">
+              <p className="text-s text-[#4a3329] font-medium">
                 Sistema de Reservas
               </p>
             </div>

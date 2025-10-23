@@ -61,7 +61,7 @@ export default function RoomCard({ room, onReserve }) {
         <div className="mt-auto">
           <button
             onClick={onReserve}
-            className="w-full bg-[#E69500] text-white py-3 rounded-xl hover:bg-[#cc7f00] transition font-semibold shadow-sm hover:shadow-md"
+            className="w-full bg-[#4a3329] text-white py-3 rounded-xl hover:bg-[#6B4A38] transition font-semibold shadow-sm hover:shadow-md"
           >
             Reservar Agora
           </button>

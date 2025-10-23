@@ -249,7 +249,7 @@ export default function ReservationModal({ room, onClose, onSuccess }) {
           <button
             type="submit"
             disabled={loading || !!capacityError}
-            className="w-full bg-gradient-to-r from-[#FFB94F] to-[#e5a740] text-[#0C0C0C] py-4 rounded-xl hover:from-[#e5a740] hover:to-[#FFB94F] transition font-bold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+            className="w-full bg-[#4a3329] text-white py-3 rounded-xl hover:bg-[#6B4A38] transition font-semibold shadow-sm hover:shadow-md"
           >
             {loading ? '🐝 Processando...' : '✨ Confirmar Reserva'}
           </button>
