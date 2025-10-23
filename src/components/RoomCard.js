@@ -29,8 +29,10 @@ export default function RoomCard({ room, onReserve }) {
           </div>
         )}
         <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full shadow-md">
-          <span className="text-sm font-semibold text-gray-900 flex items-center gap-1">
-            {room.capacity} <Users size={14} />
+          <span className="text-sm text-gray-700 flex items-center gap-1">
+            <span className="font-medium">Capacidade:</span>
+            <span className="font-semibold text-gray-900">{room.capacity}</span>
+            <Users size={14} />
           </span>
         </div>
       </div>
