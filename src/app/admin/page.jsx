@@ -710,23 +710,19 @@ function RoomStatusSection() {
                       key={day}
                       onClick={() => selectDay(day)}
                       className={`aspect-square flex items-center justify-center rounded-lg text-sm font-semibold transition-all cursor-pointer relative
-                        ${
-                          isSelected
-                            ? "bg-[#48C957] text-white scale-110 shadow-lg"
-                            : ""
-                        }
-                        ${
-                          !isSelected && hasBooking
-                            ? "bg-[#FFB94F] text-[#0C0C0C] hover:bg-[#e5a740]"
-                            : ""
-                        }
-                        ${
-                          !isSelected && !hasBooking
-                            ? "bg-[#F8F4E3] text-gray-700 hover:bg-[#FFE0A3]"
-                            : ""
-                        }
-                        ${isToday && !isSelected ? "ring-2 ring-[#48C957]" : ""}
-                      `}
+    ${isSelected ? "bg-[#48C957] text-white scale-110 shadow-lg" : ""}
+    ${
+      !isSelected && hasBooking
+        ? "bg-[#FFB94F] text-[#0C0C0C] scale-110 border-2 border-[#48C957] shadow-lg"
+        : ""
+    }
+    ${
+      !isSelected && !hasBooking
+        ? "bg-[#F8F4E3] text-gray-700 hover:bg-[#FFE0A3]"
+        : ""
+    }
+    ${isToday && !isSelected ? "ring-2 ring-[#48C957]" : ""}
+  `}
                     >
                       {day}
                       {hasBooking && !isSelected && (
@@ -769,7 +765,13 @@ function RoomStatusSection() {
             return (
               <div
                 key={room._id}
-                className="group bg-gradient-to-br from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl border-2 border-[#FFB94F] hover:border-[#48C957] transition-all duration-300 transform hover:scale-105 hover:shadow-lg relative overflow-hidden"
+                className={`group bg-gradient-to-br from-[#F8F4E3] to-[#FFF8E7] p-5 rounded-xl transition-all duration-300 relative overflow-hidden
+    ${
+      roomStatus.status === "occupied"
+        ? "border-2 border-[#48C957] scale-105 shadow-lg"
+        : "border-2 border-[#FFB94F]"
+    }
+  `}
               >
                 <div className="absolute -right-4 -top-4 opacity-5 transform rotate-12">
                   <svg className="w-24 h-24" viewBox="0 0 24 24">
@@ -983,7 +985,7 @@ export default function AdminPage() {
           <BookingSection />
           <RoomStatusSection />
         </div>
-        <AdminFooter /> 
+        <AdminFooter />
       </div>
     </div>
   );
