@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllBookings,getRooms, deleteBooking } from "../../services/api";
+import { getAllBookings, getRooms, deleteBooking } from "../../services/api";
 import { Calendar, X } from "lucide-react";
 
 // ======================
@@ -164,9 +164,18 @@ function BookingSection() {
           getAllBookings(),
           getRooms()
         ]);
-        setBookings(allBookings);
+        
+        // 🔥 FILTRAR reservas válidas (com sala)
+        const validBookings = allBookings.filter(b => b.room && b.room !== null);
+        
+        console.log('📊 Total de reservas:', allBookings.length);
+        console.log('✅ Reservas válidas:', validBookings.length);
+        console.log('❌ Reservas órfãs:', allBookings.length - validBookings.length);
+        
+        setBookings(validBookings);
         setRooms(allRooms);
       } catch (err) {
+        console.error('Erro ao carregar dados:', err);
         setBookings([]);
         setRooms([]);
       } finally {
@@ -201,7 +210,6 @@ function BookingSection() {
       try {
         await deleteBooking(id);
         alert(`Reserva cancelada com sucesso! 🐝`);
-        // dar refresh à lista
         const [allBookings, allRooms] = await Promise.all([
           getAllBookings(),
           getRooms()
@@ -233,8 +241,14 @@ function BookingSection() {
       ) : (
         <div className="space-y-4">
           {bookings.map((booking) => {
-            const roomObj = rooms.find(r => r._id === booking.room);
-            const roomName = roomObj ? roomObj.name : booking.room;
+            // Agora booking.room sempre existe (foi filtrado acima)
+            const roomId = typeof booking.room === 'object' && booking.room !== null 
+              ? booking.room._id 
+              : booking.room;
+              
+            const roomName = typeof booking.room === 'object' && booking.room !== null
+              ? booking.room.name 
+              : (rooms.find(r => r._id === booking.room)?.name || 'Sala Desconhecida');
             
             return (
               <div
@@ -338,8 +352,12 @@ function RoomStatusSection() {
           getRooms(),
           getAllBookings()
         ]);
+        
+        // 🔥 FILTRAR reservas válidas
+        const validBookings = allBookings.filter(b => b.room && b.room !== null);
+        
         setRooms(allRooms);
-        setBookings(allBookings);
+        setBookings(validBookings);
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
       } finally {
@@ -380,9 +398,16 @@ function RoomStatusSection() {
     checkDate.setHours(0, 0, 0, 0);
     
     return bookings.find(booking => {
+      if (!booking.room) return false; // 🔥 Pula se room é null
+      
+      // 🔥 CORREÇÃO: Pegar ID correto da sala
+      const bookingRoomId = typeof booking.room === 'object' && booking.room !== null
+        ? booking.room._id 
+        : booking.room;
+        
       const bookingDate = new Date(booking.date);
       bookingDate.setHours(0, 0, 0, 0);
-      return booking.room === roomId && bookingDate.getTime() === checkDate.getTime();
+      return bookingRoomId === roomId && bookingDate.getTime() === checkDate.getTime();
     });
   };
 
@@ -622,12 +647,30 @@ function RoomStatusSection() {
 
                   {roomStatus.status === "occupied" && roomStatus.booking && (
                     <div className="bg-white bg-opacity-60 rounded-lg p-3 mb-4 border border-[#FFB94F]">
-                      <p className="text-sm text-gray-700">
+                      <p className="text-sm text-gray-700 mb-2">
                         <span className="font-semibold">Reservado por:</span> {roomStatus.booking.userName}
                       </p>
-                      <p className="text-sm text-gray-700">
+                      <p className="text-sm text-gray-700 mb-2">
                         <span className="font-semibold">Pessoas:</span> {roomStatus.booking.numberOfPeople}
                       </p>
+                      
+                      {/* 🔥 Mostrar apenas recursos SOLICITADOS */}
+                      {roomStatus.booking.selectedResources && roomStatus.booking.selectedResources.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs text-gray-600 font-semibold mb-1">Recursos solicitados:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {roomStatus.booking.selectedResources.map((res, idx) => (
+                              <span
+                                key={idx}
+                                className="text-xs bg-[#FFB94F] text-[#0C0C0C] px-2 py-0.5 rounded-full font-medium flex items-center gap-1"
+                              >
+                                <span>{resourceIcons[res] || "📦"}</span>
+                                {res}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -679,9 +722,14 @@ export default function AdminPage() {
           getAllBookings(),
           getRooms()
         ]);
-        setBookings(allBookings);
+        
+        // 🔥 FILTRAR reservas válidas para os stats
+        const validBookings = allBookings.filter(b => b.room && b.room !== null);
+        
+        setBookings(validBookings);
         setRooms(allRooms);
       } catch (err) {
+        console.error('Erro ao carregar dados:', err);
         setBookings([]);
         setRooms([]);
       } finally {

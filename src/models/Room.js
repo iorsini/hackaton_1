@@ -24,12 +24,19 @@ const RoomSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
-
     location: {
       type: String,
       default: '',
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
+  {
+    timestamps: true,
+  }
 );
 
-export default mongoose.models.Room || mongoose.model('sala', RoomSchema);
+// 🔥 IMPORTANTE: Usar 'Room' como nome do modelo
+export default mongoose.models.Room || mongoose.model('Room', RoomSchema);

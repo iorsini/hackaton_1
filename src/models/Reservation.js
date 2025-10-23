@@ -22,21 +22,27 @@ const ReservationSchema = new mongoose.Schema(
       type: Date,
       required: [true, 'Data é obrigatória'],
     },
-    startTime: {
-      type: String,
-      required: [true, 'Hora de início é obrigatória'],
-    },
-    endTime: {
-      type: String,
-      required: [true, 'Hora de fim é obrigatória'],
+    // REMOVIDO: startTime e endTime (já que é reserva de dia completo)
+    // ADICIONADO: numberOfPeople
+    numberOfPeople: {
+      type: Number,
+      required: [true, 'Número de pessoas é obrigatório'],
+      min: 1,
     },
     purpose: {
       type: String,
+      required: [true, 'Finalidade é obrigatória'],
       trim: true,
     },
     selectedResources: {
       type: [String],
       default: [],
+    },
+    // ADICIONADO: status para controlar reservas ativas/canceladas
+    status: {
+      type: String,
+      enum: ['active', 'cancelled'],
+      default: 'active',
     },
   },
   {
@@ -46,6 +52,7 @@ const ReservationSchema = new mongoose.Schema(
 
 // Index para buscar reservas por sala e data
 ReservationSchema.index({ room: 1, date: 1 });
+ReservationSchema.index({ status: 1 });
 
 export default mongoose.models.Reservation ||
   mongoose.model('Reservation', ReservationSchema);
