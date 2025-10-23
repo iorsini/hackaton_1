@@ -197,7 +197,7 @@ function BookingSection() {
           getRooms(),
         ]);
 
-        // 🔥 FILTRAR reservas válidas (com sala)
+        // Filtrar reservas válidas (com sala)
         const validBookings = allBookings.filter(
           (b) => b.room && b.room !== null
         );
@@ -280,7 +280,6 @@ function BookingSection() {
       ) : (
         <div className="space-y-4">
           {bookings.map((booking) => {
-            // Agora booking.room sempre existe (foi filtrado acima)
             const roomId =
               typeof booking.room === "object" && booking.room !== null
                 ? booking.room._id
@@ -430,7 +429,6 @@ function RoomStatusSection() {
           getAllBookings(),
         ]);
 
-        // 🔥 FILTRAR reservas válidas
         const validBookings = allBookings.filter(
           (b) => b.room && b.room !== null
         );
@@ -486,9 +484,8 @@ function RoomStatusSection() {
     checkDate.setHours(0, 0, 0, 0);
 
     return bookings.find((booking) => {
-      if (!booking.room) return false; // 🔥 Pula se room é null
+      if (!booking.room) return false;
 
-      // 🔥 CORREÇÃO: Pegar ID correto da sala
       const bookingRoomId =
         typeof booking.room === "object" && booking.room !== null
           ? booking.room._id
@@ -819,7 +816,6 @@ function RoomStatusSection() {
                         {roomStatus.booking.numberOfPeople}
                       </p>
 
-                      {/* 🔥 Mostrar apenas recursos SOLICITADOS */}
                       {roomStatus.booking.selectedResources &&
                         roomStatus.booking.selectedResources.length > 0 && (
                           <div className="mt-2">
@@ -880,6 +876,18 @@ function RoomStatusSection() {
 }
 
 // ======================
+// FOOTER SIMPLES
+// ======================
+
+function AdminFooter() {
+  return (
+    <footer className="mt-12 text-center text-sm text-gray-600">
+      <p>© {new Date().getFullYear()} Honeycomb • Sistema de Coworking 🐝</p>
+    </footer>
+  );
+}
+
+// ======================
 // PÁGINA PRINCIPAL
 // ======================
 
@@ -896,7 +904,6 @@ export default function AdminPage() {
           getRooms(),
         ]);
 
-        // 🔥 FILTRAR reservas válidas para os stats
         const validBookings = allBookings.filter(
           (b) => b.room && b.room !== null
         );
@@ -921,10 +928,10 @@ export default function AdminPage() {
         {Array.from({ length: 15 }).map((_, i) => {
           const top = `${Math.random() * 90}%`;
           const left = `${Math.random() * 90}%`;
-          const size = `${Math.floor(Math.random() * 3) + 3}xl`; // text-3xl a text-6xl
+          const size = `${Math.floor(Math.random() * 3) + 3}xl`;
           const delay = `${(Math.random() * 5).toFixed(1)}s`;
-          const duration = `${(Math.random() * 4 + 4).toFixed(1)}s`; // 4s a 8s
-          const opacity = (Math.random() * 0.3 + 0.2).toFixed(2); // 0.2 a 0.5
+          const duration = `${(Math.random() * 4 + 4).toFixed(1)}s`;
+          const opacity = (Math.random() * 0.3 + 0.2).toFixed(2);
 
           return (
             <div
@@ -976,6 +983,7 @@ export default function AdminPage() {
           <BookingSection />
           <RoomStatusSection />
         </div>
+        <AdminFooter /> 
       </div>
     </div>
   );

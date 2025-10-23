@@ -6,6 +6,18 @@ import ReservationModal from "@/components/ReservationModal";
 import { Search } from "lucide-react";
 import { getRooms } from "../services/api";
 
+// ======================
+// FOOTER SIMPLES
+// ======================
+
+function SimpleFooter() {
+  return (
+    <footer className="mt-12 text-center text-sm text-gray-600">
+      <p>© {new Date().getFullYear()} Honeycomb • Sistema de Coworking 🐝</p>
+    </footer>
+  );
+}
+
 export default function Home() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +56,7 @@ export default function Home() {
   const filteredRooms = rooms.filter(
     (room) =>
       room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      room.description.toLowerCase().includes(searchTerm.toLowerCase())
+      room.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const stats = [
@@ -285,6 +297,9 @@ export default function Home() {
             }}
           />
         )}
+
+        {/* Footer */}
+        <SimpleFooter />
       </div>
     </div>
   );
