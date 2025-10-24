@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node server.js",
-    "prebuild": "node scripts/seedRooms.js",
-    "build": "next build",
+    "build": "node scripts/seedRooms.js && next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "seed": "node scripts/seedRooms.js"
