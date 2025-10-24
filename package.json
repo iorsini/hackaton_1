@@ -1,13 +1,13 @@
 {
-  "name": "espaco-comunitario-reservas",
+  "name": "honeycomb-reservas",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
-    "seed": "node seed.js"
+    "seed": "node scripts/seedRooms.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -23,5 +23,8 @@
     "dotenv": "^16.6.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.18"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }
