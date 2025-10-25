@@ -21,7 +21,6 @@ const StatsCard = ({ stat, isHovered, onHover }) => (
           : "drop-shadow(0 4px 6px rgba(0,0,0,0.1))",
       }}
     >
-      {/* Hexágono SVG */}
       <svg viewBox="0 0 100 100" className="w-full h-full absolute">
         <defs>
           <linearGradient
@@ -43,7 +42,6 @@ const StatsCard = ({ stat, isHovered, onHover }) => (
         />
       </svg>
 
-      {/* Conteúdo */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-3 sm:px-4 md:px-6">
         <div
           className="p-2 sm:p-2.5 md:p-3 rounded-xl shadow-lg transform transition-all duration-300 mb-2 sm:mb-2.5 md:mb-3"
@@ -68,7 +66,6 @@ const StatsCard = ({ stat, isHovered, onHover }) => (
         </div>
       </div>
 
-      {/* Efeito hover */}
       {isHovered && (
         <div className="absolute inset-0 pointer-events-none">
           <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -83,7 +80,6 @@ const StatsCard = ({ stat, isHovered, onHover }) => (
   </div>
 );
 
-// Floating Bee Component
 const FloatingBee = ({ bee }) => (
   <div
     className="absolute animate-float pointer-events-none"
@@ -99,7 +95,6 @@ const FloatingBee = ({ bee }) => (
   </div>
 );
 
-// Footer Component
 const Footer = () => (
   <footer className="mt-12 text-center text-sm text-gray-600 px-4">
     <p>© {new Date().getFullYear()} Honeycomb • Sistema de Coworking 🐝</p>
@@ -109,11 +104,11 @@ const Footer = () => (
 export default function Home() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [hoverCard, setHoverCard] = useState(null);
 
-  // Gerar abelhas uma única vez
   const bees = useMemo(
     () =>
       Array.from({ length: 15 }).map(() => ({
@@ -127,7 +122,6 @@ export default function Home() {
     []
   );
 
-  // Stats data
   const stats = useMemo(
     () => [
       {
@@ -194,10 +188,18 @@ export default function Home() {
 
   const fetchRooms = async () => {
     try {
+      setLoading(true);
+      setError(null);
       const data = await getRooms();
-      if (data) setRooms(data);
+      
+      if (!data || data.length === 0) {
+        setError('nosalas');
+      } else {
+        setRooms(data);
+      }
     } catch (error) {
       console.error("Erro ao carregar salas:", error);
+      setError('error');
     } finally {
       setLoading(false);
     }
@@ -215,7 +217,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F8F4E3] via-[#FFF8E7] to-[#F8F4E3] py-6 sm:py-8 md:py-10 px-4 relative overflow-hidden">
-      {/* Abelhas animadas */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden hidden sm:block">
         {bees.map((bee, i) => (
           <FloatingBee key={i} bee={bee} />
@@ -223,7 +224,6 @@ export default function Home() {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Hero Section */}
         <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#0C0C0C] mb-2 tracking-tight px-4">
             Encontre o Espaço Perfeito
@@ -232,7 +232,6 @@ export default function Home() {
             Reserve salas, recursos e itens para o seu próximo evento
           </p>
 
-          {/* Search Bar */}
           <div className="max-w-2xl mx-auto mb-6 px-4">
             <div className="relative">
               <Search
@@ -250,7 +249,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-3 gap-3 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12 px-4">
           {stats.map((stat) => (
             <StatsCard
@@ -262,7 +260,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Rooms Grid */}
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-4 border-[#FFB94F] mx-auto"></div>
@@ -270,11 +267,42 @@ export default function Home() {
               A carregar salas...
             </p>
           </div>
+        ) : error === 'nosalas' ? (
+          <div className="text-center py-12 px-4">
+            <div className="text-5xl sm:text-6xl mb-4">🏗️</div>
+            <p className="text-[#8B4513] text-base sm:text-lg font-medium mb-4">
+              Nenhuma sala encontrada no banco de dados
+            </p>
+            <p className="text-sm text-gray-600 mb-6">
+              Clique no botão abaixo para criar salas de exemplo
+            </p>
+            <a
+              href="/api/seed"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-[#48C957] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#3db045] transition"
+            >
+              🐝 Popular Banco de Dados
+            </a>
+          </div>
+        ) : error === 'error' ? (
+          <div className="text-center py-12 px-4">
+            <div className="text-5xl sm:text-6xl mb-4">⚠️</div>
+            <p className="text-[#8B4513] text-base sm:text-lg font-medium mb-4">
+              Erro ao carregar salas
+            </p>
+            <button
+              onClick={fetchRooms}
+              className="bg-[#FFB94F] text-[#0C0C0C] px-6 py-3 rounded-full font-semibold hover:bg-[#e5a740] transition"
+            >
+              Tentar Novamente
+            </button>
+          </div>
         ) : filteredRooms.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-5xl sm:text-6xl mb-4">🔍</div>
             <p className="text-[#8B4513] text-base sm:text-lg font-medium px-4">
-              Nenhuma sala encontrada
+              Nenhuma sala encontrada com esse termo
             </p>
           </div>
         ) : (
@@ -289,7 +317,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Modal */}
         {selectedRoom && (
           <ReservationModal
             room={selectedRoom}

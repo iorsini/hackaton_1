@@ -38,8 +38,5 @@ const RoomSchema = new mongoose.Schema(
   }
 );
 
-// 🔥 CORREÇÃO: Deletar modelo existente antes de criar
-delete mongoose.models.Room;
-delete mongoose.models.Sala;
-
-export default mongoose.model('Room', RoomSchema);
+// 🔥 CORREÇÃO para Vercel: Use padrão correto para evitar recompilação
+export default mongoose.models.Room || mongoose.model('Room', RoomSchema);
