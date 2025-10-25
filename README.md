@@ -4,9 +4,6 @@
   <a href="https://nextjs.org/">
     <img src="https://img.shields.io/badge/Next.js-14+-black?style=flat-square&logo=nextdotjs&logoColor=white"/>
   </a>
-  <a href="https://expressjs.com/">
-    <img src="https://img.shields.io/badge/Express-5.1+-success?style=flat-square&logo=express&logoColor=white"/>
-  </a>
   <a href="https://www.mongodb.com/">
     <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white"/>
   </a>
@@ -18,117 +15,107 @@
   </a>
 </p>
 
+<p align="center">
+  <strong>Sistema completo de gestão de reservas para espaços comunitários e coworkings</strong>
+</p>
+
+<p align="center">
+  🎨 Design Hexagonal • 🐝 Animações Fluidas • 📱 100% Responsivo
+</p>
+
+---
+
+## 📖 Índice
+
+- [Sobre](#-sobre-o-projeto)
+- [Features](#-features)
+- [Instalação](#-instalação)
+- [Estrutura](#-estrutura-do-projeto)
+- [API](#-api-endpoints)
+- [Tecnologias](#-tecnologias)
+- [Deploy](#-deploy)
+- [Contribuir](#-contribuindo)
+
 ---
 
 ## 🎯 Sobre o Projeto
 
-**Honeycomb** é um sistema completo de gestão de reservas para espaços comunitários, coworkings e salas de reunião. Inspirado na organização perfeita de uma colmeia, oferece uma experiência visual única com design hexagonal temático! 🐝
+O **Honeycomb** é um sistema de reservas inspirado na organização perfeita de uma colmeia. Com design temático em mel e hexágonos, oferece uma experiência visual única e intuitiva para gerenciar espaços compartilhados.
 
 ### 🌟 Diferenciais
 
-- 🎨 **Design Único** - Interface inspirada em favos de mel
-- 🌊 **Animações Suaves** - Abelhas flutuantes e transições elegantes  
-- 📱 **100% Responsivo** - Funciona perfeitamente em qualquer dispositivo
-- ⚡ **Performance Otimizada** - Next.js + Express para máxima velocidade
-- 🔒 **Validações Inteligentes** - Previne conflitos de reservas automaticamente
-- 🎯 **UX Intuitiva** - Processo de reserva em poucos cliques
+| Feature | Descrição |
+|---------|-----------|
+| 🎨 **Design Único** | Interface hexagonal inspirada em favos de mel |
+| 🌊 **Animações Suaves** | Abelhas flutuantes e transições elegantes |
+| 📱 **Responsivo** | Adaptado para mobile, tablet e desktop |
+| ⚡ **Performance** | Next.js 14 com App Router otimizado |
+| 🔒 **Validações** | Sistema inteligente anti-conflitos |
+| 🎯 **UX Intuitiva** | Reserva em poucos cliques |
 
 ---
 
 ## ✨ Features
 
-### 👥 Para Usuários
+### 👤 Área do Usuário
 
-#### 🏢 Gestão de Salas
-- 🔍 Busca inteligente por nome/descrição
-- 📊 Visualização detalhada de capacidade
-- 🎨 Cards animados
-- 📦 Lista completa de recursos disponíveis
+- 🔍 Busca em tempo real por nome/descrição
+- 📊 Cards com informações de capacidade e recursos
+- 📅 Calendário visual de disponibilidade
+- 🎯 Seleção de recursos extras (projetor, WiFi, etc)
+- ✅ Validação automática de capacidade
+- 🐝 Confirmação instantânea com design temático
 
-#### 📅 Sistema de Reservas
-- 📆 Reserva de dia completo
-- 👥 Definição de capacidade das salas
-- 🎯 Seleção de recursos necessários
-- ✉️ Confirmação visual instantânea
+### 👨‍💼 Painel Admin
 
-#### 🎨 Interface
-- 🍯 Tema mel e colmeia
-- 🐝 Abelhas animadas no background
-- 💫 Stats em hexágonos 3D
-- 🌈 Gradientes dourados personalizados
-
-#### ✅ Validações
-- ⚠️ Alerta de capacidade excedida
-- 🚫 Bloqueio de datas já reservadas
-- ✓ Verificação de dados em tempo real
-- 📧 Validação de email
-
-### 🔧 Para Administradores
-
-#### 📊 Dashboard Completo
-- 📈 Estatísticas em hexágonos 3D
+- 📈 Dashboard com estatísticas em hexágonos 3D
 - 📋 Lista de todas as reservas ativas
-- 🏢 Status em tempo real de cada sala
-- 📅 Calendário visual interativo
-
-#### 🛠️ Controle Total
+- 🗓️ Calendário interativo com navegação por mês
+- 👥 Detalhes completos de cada reserva
 - ❌ Cancelamento de reservas
-- 📦 Visualização de recursos solicitados
-- 👥 Detalhes de cada reserva
-- 🗓️ Navegação por mês no calendário
+- 🏢 Status em tempo real de cada sala
 
 ---
 
 ## 📦 Instalação
 
-### 📋 Pré-requisitos
+### Pré-requisitos
 
 ```bash
-Node.js 18+
-MongoDB Atlas (ou local)
+Node.js >= 18.17.0
+MongoDB Atlas ou local
 npm ou yarn
-Git
 ```
 
-### 🛠️ Passo a Passo
+### Setup Rápido
 
-**1️⃣ Clone o repositório**
 ```bash
+# 1. Clone o repositório
 git clone https://github.com/seu-usuario/honeycomb.git
 cd honeycomb
-```
 
-**2️⃣ Instale as dependências**
-```bash
+# 2. Instale dependências
 npm install
+
+# 3. Configure variáveis de ambiente
+cp .env.example .env.local
+# Edite .env.local com suas credenciais MongoDB
+
+# 4. Inicie o servidor
+npm run dev
+
+# 5. Popule o banco (opcional)
+# Acesse: http://localhost:3000/api/seed
 ```
 
-**3️⃣ Configure as variáveis de ambiente**
+### Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz do projeto:
+Crie `.env.local` na raiz:
 
 ```env
-MONGODB_URI=mongodb+srv://usuario:senha@cluster.mongodb.net/honeycomb?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://usuario:senha@cluster.mongodb.net/honeycomb
 NODE_ENV=development
-PORT=3000
 ```
-
-**4️⃣ (Opcional) Popule o banco com dados de exemplo**
-```bash
-npm run seed
-```
-
-**5️⃣ Inicie o servidor de desenvolvimento**
-```bash
-npm run dev
-```
-
-**6️⃣ Abra no navegador**
-```
-http://localhost:3000
-```
-
-🎉 **Pronto!** O Honeycomb está funcionando!
 
 ---
 
@@ -136,80 +123,77 @@ http://localhost:3000
 
 ```
 honeycomb/
+│
+├── src/
+│   ├── app/                    # App Router (Next.js 14)
+│   │   ├── page.js            # Página inicial
+│   │   ├── layout.js          # Layout global
+│   │   ├── globals.css        # Estilos globais
+│   │   ├── admin/
+│   │   │   └── page.jsx       # Dashboard admin
+│   │   └── api/               # API Routes
+│   │       ├── salas/         # Endpoints de salas
+│   │       ├── bookings/      # Endpoints de reservas
+│   │       └── seed/          # Popular DB
+│   │
+│   ├── components/            # Componentes React
+│   │   ├── Navbar.js
+│   │   ├── RoomCard.js
+│   │   └── ReservationModal.js
+│   │
+│   ├── models/                # Schemas MongoDB
+│   │   ├── Room.js
+│   │   └── Reservation.js
+│   │
+│   ├── services/              # API Client
+│   │   └── api.js
+│   │
+│   └── lib/                   # Utilitários
+│       ├── db.js              # Conexão MongoDB
+│       └── mail.js            # Sistema de emails
+│
 ├── public/
 │   └── images/
 │       ├── logoHoneycomb.svg
 │       └── rooms/
-├── src/
-│   ├── app/
-│   │   ├── page.js              # Página principal (usuário)
-│   │   ├── admin/
-│   │   │   └── page.jsx         # Dashboard admin
-│   │   ├── globals.css          # Estilos globais + tema mel
-│   │   └── layout.js            # Layout base
-│   ├── components/
-│   │   ├── Navbar.js            # Barra de navegação
-│   │   ├── RoomCard.js          # Card de sala
-│   │   └── ReservationModal.js  # Modal de reserva
-│   ├── models/
-│   │   ├── Room.js              # Schema de salas
-│   │   └── Reservation.js       # Schema de reservas
-│   ├── services/
-│   │   └── api.js               # Cliente HTTP
-│   └── lib/
-│       ├── db.js                # Conexão MongoDB
-│       └── mail.js              # Sistema de emails
-├── server.js                    # Servidor Express + Next.js
+│
+├── .env.local                 # Variáveis de ambiente
 ├── package.json
 ├── tailwind.config.js
-└── .env
+└── next.config.js
 ```
 
 ---
 
 ## 🔧 API Endpoints
 
-### 🏢 Salas
+### Salas
 
-| Método | Endpoint | Descrição | Auth |
-|--------|----------|-----------|------|
-| `GET` | `/api/salas` | Lista todas as salas | ❌ |
-| `GET` | `/api/salas/:id` | Detalhes de uma sala | ❌ |
-| `POST` | `/api/salas` | Criar nova sala | ✅ |
-| `GET` | `/api/salas/:id/bookings` | Reservas de uma sala | ❌ |
-| `GET` | `/api/salas/:id/available-dates` | Datas indisponíveis | ❌ |
-
-### 📅 Reservas
-
-| Método | Endpoint | Descrição | Auth |
-|--------|----------|-----------|------|
-| `GET` | `/api/bookings` | Todas as reservas ativas | ✅ |
-| `POST` | `/api/salas/:id/booking` | Criar reserva | ❌ |
-| `DELETE` | `/api/bookings/:id` | Cancelar reserva | ✅ |
-
-### 📝 Exemplos de Uso
-
-**Buscar todas as salas**
-```javascript
-GET /api/salas
-
-// Response (200 OK)
-[
-  {
-    "_id": "67890abc",
-    "name": "Auditório",
-    "description": "Grande espaço para eventos...",
-    "capacity": 50,
-    "resources": ["Projetor", "Sistema de Som", "Microfones"],
-    "image": "/images/rooms/auditorio.png",
-    "location": "Piso Térreo",
-    "isActive": true
-  }
-]
+```http
+GET    /api/salas              # Lista todas as salas
+GET    /api/salas/:id          # Detalhes de uma sala
+POST   /api/salas              # Criar sala (admin)
+POST   /api/salas/:id/booking  # Criar reserva
 ```
 
-**Criar uma reserva**
-```javascript
+### Reservas
+
+```http
+GET    /api/bookings           # Lista reservas ativas (admin)
+DELETE /api/bookings/:id       # Cancelar reserva (admin)
+```
+
+### Seed
+
+```http
+GET    /api/seed               # Popular banco com exemplos
+DELETE /api/seed               # Limpar banco
+```
+
+### Exemplo: Criar Reserva
+
+**Request:**
+```http
 POST /api/salas/67890abc/booking
 Content-Type: application/json
 
@@ -221,13 +205,18 @@ Content-Type: application/json
   "purpose": "Reunião de equipe",
   "selectedResources": ["Projetor", "WiFi"]
 }
+```
 
-// Response (201 Created)
+**Response (201):**
+```json
 {
   "success": true,
   "data": {
     "_id": "12345xyz",
-    "room": { /* dados da sala */ },
+    "room": {
+      "name": "Sala de Reuniões",
+      "capacity": 12
+    },
     "userName": "João Silva",
     "userEmail": "joao@email.com",
     "date": "2025-10-25T00:00:00.000Z",
@@ -241,36 +230,34 @@ Content-Type: application/json
 
 ---
 
-## 🗄️ Banco de Dados
+## 🗄️ Schemas MongoDB
 
-### 📊 Schemas MongoDB
-
-**Room (Sala)**
+### Room
 ```javascript
 {
   name: String,              // Nome da sala
-  description: String,       // Descrição detalhada
-  capacity: Number,          // Número máximo de pessoas
-  resources: [String],       // ["Projetor", "WiFi", ...]
+  description: String,       // Descrição
+  capacity: Number,          // Capacidade máxima
+  resources: [String],       // Recursos disponíveis
   image: String,             // URL da imagem
   location: String,          // Localização física
-  isActive: Boolean,         // Se está disponível
+  isActive: Boolean,         // Status
   createdAt: Date,
   updatedAt: Date
 }
 ```
 
-**Reservation (Reserva)**
+### Reservation
 ```javascript
 {
   room: ObjectId,            // Referência à sala
   userName: String,          // Nome do usuário
-  userEmail: String,         // Email do usuário
-  date: Date,                // Data da reserva (dia completo)
-  numberOfPeople: Number,    // Quantidade de pessoas
-  purpose: String,           // Finalidade da reserva
-  selectedResources: [String], // Recursos solicitados
-  status: String,            // "active" ou "cancelled"
+  userEmail: String,         // Email
+  date: Date,                // Data (dia completo)
+  numberOfPeople: Number,    // Qtd pessoas
+  purpose: String,           // Finalidade
+  selectedResources: [String], // Recursos extras
+  status: String,            // "active" | "cancelled"
   createdAt: Date,
   updatedAt: Date
 }
@@ -278,116 +265,111 @@ Content-Type: application/json
 
 ---
 
-## 🎨 Customização
+## 🛠️ Tecnologias
 
-### 🌈 Tema de Cores
-
-Edite `src/app/globals.css`:
-
-```css
-:root {
-  --honey-primary: #FFB947;   /* Dourado principal */
-  --honey-dark: #E69500;      /* Dourado escuro */
-  --honey-light: #FFEACC;     /* Mel claro */
-  --honey-cream: #FFF8E7;     /* Creme */
-  --honey-brown: #8B6914;     /* Marrom mel */
-}
-```
-
-### 🐝 Abelhas Animadas
-
-Ajuste em `src/app/page.js`:
-
-```javascript
-// Número de abelhas
-const bees = Array.from({ length: 15 }) // Altere para mais/menos
-
-// Velocidade
-animationDuration: `${(Math.random() * 4 + 4).toFixed(1)}s` // 4-8s
-```
+| Categoria | Tecnologias |
+|-----------|------------|
+| **Frontend** | Next.js 14, React 18, Tailwind CSS |
+| **Backend** | Next.js API Routes |
+| **Banco de Dados** | MongoDB Atlas, Mongoose |
+| **UI** | Lucide React, Custom Animations |
+| **Deploy** | Vercel |
 
 ---
 
-## 📜 Scripts Disponíveis
+## 📜 Scripts
 
 ```bash
-npm run dev          # Desenvolvimento (Express + Next.js)
-npm run build        # Build de produção
-npm start            # Servidor de produção
-npm run seed         # Popular banco de dados
-npm run lint         # Verificar código
+npm run dev      # Desenvolvimento (http://localhost:3000)
+npm run build    # Build de produção
+npm start        # Inicia servidor de produção
+npm run lint     # Verifica código
 ```
-
----
-
-## 🛠️ Stack Tecnológica
-
-**Core**
-- [Next.js 14](https://nextjs.org/) - Framework React
-- [Express 5.1](https://expressjs.com/) - Servidor HTTP
-- [React 18](https://react.dev/) - Biblioteca UI
-- [MongoDB Atlas](https://www.mongodb.com/) - Banco NoSQL
-
-**UI/UX**
-- [Tailwind CSS 3.4](https://tailwindcss.com/) - Framework CSS
-- [Lucide React](https://lucide.dev/) - Ícones modernos
-- Custom CSS Animations - Animações personalizadas
-
-**Dados**
-- [Mongoose 8.19](https://mongoosejs.com/) - ODM MongoDB
-- [CORS](https://github.com/expressjs/cors) - Controle de requisições
 
 ---
 
 ## 🚀 Deploy
 
-### 🌐 Vercel (Recomendado)
+### Vercel (Recomendado)
 
-1. Conecte seu repositório GitHub à Vercel
-2. Configure as variáveis de ambiente:
-```
-MONGODB_URI=sua-string-mongodb-atlas
-NODE_ENV=production
-```
+1. Conecte seu repositório ao Vercel
+2. Configure variável de ambiente:
+   ```
+   MONGODB_URI=sua-connection-string
+   ```
 3. Deploy automático! 🎉
 
-### 🐳 Docker
+### MongoDB Atlas
 
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
+1. Crie conta em [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+2. Crie um cluster
+3. Adicione IP à whitelist (`0.0.0.0/0` para todos)
+4. Crie usuário do banco
+5. Copie connection string para `.env.local`
+
+---
+
+## 🎨 Customização
+
+### Cores do Tema
+
+Edite `src/app/globals.css`:
+
+```css
+:root {
+  --honey-primary: #FFB947;
+  --honey-dark: #E69500;
+  --honey-light: #FFEACC;
+  --honey-cream: #FFF8E7;
+  --honey-brown: #8B6914;
+}
 ```
 
-```bash
-docker build -t honeycomb .
-docker run -p 3000:3000 --env-file .env honeycomb
+### Animações
+
+Ajuste em `src/app/page.js`:
+
+```javascript
+// Número de abelhas
+const bees = Array.from({ length: 15 })
+
+// Velocidade da animação
+animationDuration: `${(Math.random() * 4 + 4)}s`
 ```
 
 ---
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! 🐝
+Contribuições são bem-vindas! 
 
 1. Fork o projeto
-2. Crie uma branch: `git checkout -b feature/MinhaFeature`
-3. Commit: `git commit -m 'Adiciona MinhaFeature'`
-4. Push: `git push origin feature/MinhaFeature`
+2. Crie sua feature: `git checkout -b feature/NovaFeature`
+3. Commit: `git commit -m 'Add: Nova feature'`
+4. Push: `git push origin feature/NovaFeature`
 5. Abra um Pull Request
 
-**Ideias para contribuir:**
-- 🌍 Adicionar mais idiomas
-- 📊 Dashboard com gráficos
-- 🔔 Sistema de notificações
-- 📸 Upload de fotos
-- ⭐ Sistema de avaliações
-- 🗓️ Google Calendar
+### Ideias de Contribuição
+
+- [ ] 🌍 Suporte multi-idioma
+- [ ] 📊 Dashboard com gráficos
+- [ ] 🔔 Notificações em tempo real
+- [ ] 📸 Upload de imagens
+- [ ] ⭐ Sistema de avaliações
+- [ ] 🗓️ Integração Google Calendar
+- [ ] 🔐 Autenticação JWT
+- [ ] 📧 Sistema de emails real
+
+---
+
+## 🐛 Troubleshooting
+
+| Problema | Solução |
+|----------|---------|
+| **Erro MongoDB** | Verifique connection string e whitelist de IPs |
+| **Salas não aparecem** | Acesse `/api/seed` para popular o banco |
+| **Build falha** | Execute `npm install` novamente |
+| **Porta em uso** | Altere porta com `PORT=3001 npm run dev` |
 
 ---
 
@@ -399,11 +381,10 @@ Este projeto está sob a licença **MIT**.
 
 <div align="center">
 
-### ⭐ Se você gostou, deixe uma estrela! ⭐
+### 🐝 Feito com 🍯 e muito 💛
 
-**Feito com 🍯 e muito 💛 pela equipa Honeycomb**
+**[⭐ Star no GitHub](https://github.com/seu-usuario/honeycomb)** • **[🐛 Reportar Bug](https://github.com/seu-usuario/honeycomb/issues)** • **[💡 Sugerir Feature](https://github.com/seu-usuario/honeycomb/issues)**
 
-![Bee Animation](https://img.shields.io/badge/🐝-Buzzing-FFB94F?style=for-the-badge)
+![Bee](https://img.shields.io/badge/🐝-Buzzing-FFB94F?style=for-the-badge)
 
 </div>
-
