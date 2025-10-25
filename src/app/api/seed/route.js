@@ -62,20 +62,25 @@ const sampleRooms = [
 // GET /api/seed - Popular banco de dados
 export async function GET() {
   try {
-    await connectDB();
+    console.log('🔄 Iniciando seed...');
+    console.log('📊 MongoDB URI:', process.env.MONGODB_URI ? 'Definido' : 'NÃO DEFINIDO');
     
-    // Verificar se já existem salas
+    await connectDB();
+    console.log('✅ Conectado ao MongoDB');
+    
     const existingRooms = await Room.countDocuments();
+    console.log('📦 Salas existentes:', existingRooms);
     
     if (existingRooms > 0) {
       return NextResponse.json({ 
-        message: `Banco já possui ${existingRooms} salas. Delete-as primeiro se quiser recriar.`,
-        existingRooms 
+        message: `Banco já possui ${existingRooms} salas. Use DELETE primeiro se quiser recriar.`,
+        existingRooms,
+        rooms: await Room.find({})
       });
     }
 
-    // Inserir salas
     const insertedRooms = await Room.insertMany(sampleRooms);
+    console.log('✅ Salas criadas:', insertedRooms.length);
     
     return NextResponse.json({ 
       success: true,
@@ -83,15 +88,19 @@ export async function GET() {
       rooms: insertedRooms 
     });
   } catch (error) {
-    console.error('❌ Erro ao popular banco:', error);
+    console.error('❌ Erro detalhado:', error);
     return NextResponse.json(
-      { success: false, error: error.message },
+      { 
+        success: false, 
+        error: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     );
   }
 }
 
-// DELETE /api/seed - Limpar todas as salas (use com cuidado!)
+// DELETE /api/seed - Limpar todas as salas
 export async function DELETE() {
   try {
     await connectDB();

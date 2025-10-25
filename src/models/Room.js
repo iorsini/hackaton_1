@@ -38,5 +38,8 @@ const RoomSchema = new mongoose.Schema(
   }
 );
 
-// 🔥 IMPORTANTE: Usar 'Room' como nome do modelo
-export default mongoose.models.Room || mongoose.model('Room', RoomSchema);
+// 🔥 CORREÇÃO: Deletar modelo existente antes de criar
+delete mongoose.models.Room;
+delete mongoose.models.Sala;
+
+export default mongoose.model('Room', RoomSchema);
