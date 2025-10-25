@@ -2,14 +2,12 @@
   "name": "honeycomb-reservas",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node scripts/seedRooms.js",
-    "vercel-build": "next build"
+    "seed": "node scripts/seedRooms.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
