@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
 import Room from '@/models/Room';
 import Reservation from '@/models/Reservation';
+
+// 🔥 FORÇA DYNAMIC RENDERING
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // POST /api/salas/[id]/booking - Criar reserva
 export async function POST(request, { params }) {
@@ -24,7 +29,7 @@ export async function POST(request, { params }) {
     }
 
     // Verificar se sala existe
-    const roomData = await Room.findById(id);
+    const roomData = await Room.findById(id).lean();
     if (!roomData) {
       return NextResponse.json(
         { success: false, error: 'Sala não encontrada' },
@@ -54,7 +59,7 @@ export async function POST(request, { params }) {
       room: id,
       date: { $gte: selectedDate, $lt: nextDay },
       status: 'active',
-    });
+    }).lean();
 
     if (existingBooking) {
       return NextResponse.json(
@@ -80,19 +85,26 @@ export async function POST(request, { params }) {
 
     const savedBooking = await newBooking.save();
     
-    // 🔥 CORREÇÃO: Usar lean() para garantir compatibilidade no Vercel
+    console.log('✅ Reserva criada com sucesso!', savedBooking._id);
+    
+    // 🔥 CRITICAL: Buscar dados frescos
     const populatedBooking = await Reservation.findById(savedBooking._id)
       .populate('room', 'name capacity location resources')
-      .lean();
+      .lean()
+      .exec();
 
-    console.log('✅ Reserva criada com sucesso!', savedBooking._id);
+    // 🔥 CRITICAL: Revalidar cache
+    revalidatePath('/api/bookings');
+    revalidatePath('/admin');
 
     return NextResponse.json(
       { success: true, data: populatedBooking },
       { 
         status: 201,
         headers: {
-          'Cache-Control': 'no-store, max-age=0',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+          'Pragma': 'no-cache',
+          'Expires': '0',
         },
       }
     );
@@ -100,7 +112,12 @@ export async function POST(request, { params }) {
     console.error('❌ Erro ao criar reserva:', error);
     return NextResponse.json(
       { success: false, error: 'Erro interno', detalhes: error.message },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      }
     );
   }
 }

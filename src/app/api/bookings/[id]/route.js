@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
 import Reservation from '@/models/Reservation';
+
+// 🔥 FORÇA DYNAMIC RENDERING
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // DELETE /api/bookings/[id] - Cancelar reserva (DELETAR DE VERDADE)
 export async function DELETE(request, { params }) {
@@ -10,7 +15,7 @@ export async function DELETE(request, { params }) {
     
     console.log('🗑️ Tentando deletar reserva:', id);
     
-    // 🔥 CORREÇÃO: Deletar de verdade ao invés de marcar como cancelled
+    // 🔥 CORREÇÃO: Deletar de verdade
     const reserva = await Reservation.findByIdAndDelete(id);
     
     if (!reserva) {
@@ -23,6 +28,10 @@ export async function DELETE(request, { params }) {
     
     console.log('✅ Reserva deletada com sucesso:', id);
     
+    // 🔥 CRITICAL: Revalidar cache do Next.js
+    revalidatePath('/api/bookings');
+    revalidatePath('/admin');
+    
     return NextResponse.json(
       { 
         success: true, 
@@ -31,7 +40,9 @@ export async function DELETE(request, { params }) {
       },
       {
         headers: {
-          'Cache-Control': 'no-store, max-age=0',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+          'Pragma': 'no-cache',
+          'Expires': '0',
         },
       }
     );
@@ -39,7 +50,12 @@ export async function DELETE(request, { params }) {
     console.error('❌ Erro ao cancelar reserva:', error);
     return NextResponse.json(
       { erro: 'Erro interno', detalhes: error.message },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store',
+        },
+      }
     );
   }
 }
