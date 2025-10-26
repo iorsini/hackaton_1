@@ -12,6 +12,9 @@ export async function POST(request, { params }) {
     
     const { userName, userEmail, date, purpose, numberOfPeople, selectedResources } = body;
 
+    console.log('📝 Criando reserva para sala:', id);
+    console.log('📋 Dados:', { userName, userEmail, date, numberOfPeople });
+
     // Validações básicas
     if (!userName || !userEmail || !date || !purpose || !numberOfPeople) {
       return NextResponse.json(
@@ -76,13 +79,22 @@ export async function POST(request, { params }) {
     });
 
     const savedBooking = await newBooking.save();
-    const populatedBooking = await Reservation.findById(savedBooking._id).populate('room');
+    
+    // 🔥 CORREÇÃO: Usar lean() para garantir compatibilidade no Vercel
+    const populatedBooking = await Reservation.findById(savedBooking._id)
+      .populate('room', 'name capacity location resources')
+      .lean();
 
-    console.log('✅ Reserva criada com sucesso!');
+    console.log('✅ Reserva criada com sucesso!', savedBooking._id);
 
     return NextResponse.json(
       { success: true, data: populatedBooking },
-      { status: 201 }
+      { 
+        status: 201,
+        headers: {
+          'Cache-Control': 'no-store, max-age=0',
+        },
+      }
     );
   } catch (error) {
     console.error('❌ Erro ao criar reserva:', error);
